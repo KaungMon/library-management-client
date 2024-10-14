@@ -1,9 +1,9 @@
 <template>
-  <div>Register Page</div>
+  <div>
+    <Login />
+  </div>
 </template>
 
-<script>
-export default {};
-</script>
+<script setup></script>
 
-<style></style>
+<style scoped></style>
