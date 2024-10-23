@@ -31,13 +31,17 @@ provide("toggleSidebar", toggleSidebar);
 <style lang="scss" scoped>
 .container {
   height: calc(100vh - 3em);
-  z-index: 9999;
+  z-index: 1;
   .page {
     display: grid;
     padding: 1em;
     grid-template-columns: 15% 84%;
     transition: 0.5s;
     column-gap: 1%;
+    .sidebar {
+      z-index: 2;
+    }
+
     .wapper {
       height: calc(100% - 13%);
       backdrop-filter: blur(5.5px);
