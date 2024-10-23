@@ -1,5 +1,5 @@
 <template>
-  <div>Category Page</div>
+  <CategoryTable />
 </template>
 
 <script setup>

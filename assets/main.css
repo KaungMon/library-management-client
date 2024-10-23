@@ -173,3 +173,7 @@ body {
 .text-orange-500 {
   color: var(--orange-500);
 }
+
+.rounded-full {
+  border-radius: 50px;
+}
