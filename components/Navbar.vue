@@ -19,31 +19,19 @@
           <ul class="p-0 my-5">
             <li>
               <i class="pi pi-home" style="color: white"></i>
-              <nuxt-link
-                v-if="!isCollapsed"
-                class="text-white no-underline nav-link"
-                to="/dashboard"
-              >
+              <nuxt-link v-if="!isCollapsed" class="nav-link" to="/dashboard">
                 Dashboard
               </nuxt-link>
             </li>
             <li>
               <i class="pi pi-list" style="color: white"></i>
-              <nuxt-link
-                v-if="!isCollapsed"
-                class="text-white no-underline nav-link"
-                to="/categories"
-              >
+              <nuxt-link v-if="!isCollapsed" class="nav-link" to="/categories">
                 Categories
               </nuxt-link>
             </li>
             <li>
               <i class="pi pi-book" style="color: white"></i>
-              <nuxt-link
-                v-if="!isCollapsed"
-                class="text-white no-underline nav-link"
-                to="/library"
-              >
+              <nuxt-link v-if="!isCollapsed" class="nav-link" to="/library">
                 Library
               </nuxt-link>
             </li>
@@ -51,7 +39,7 @@
               <i class="pi pi-bell" style="color: white"></i>
               <nuxt-link
                 v-if="!isCollapsed"
-                class="text-white no-underline nav-link"
+                class="nav-link"
                 to="/notifications"
               >
                 Notifications
@@ -66,21 +54,13 @@
         <ul class="p-0">
           <li>
             <i class="pi pi-info-circle" style="color: white"></i>
-            <nuxt-link
-              v-if="!isCollapsed"
-              class="text-white no-underline nav-link"
-              to="/library"
-            >
+            <nuxt-link v-if="!isCollapsed" class="nav-link" to="/#">
               Help and Info
             </nuxt-link>
           </li>
           <li>
             <i class="pi pi-sign-out" style="color: white"></i>
-            <nuxt-link
-              v-if="!isCollapsed"
-              class="text-white no-underline nav-link"
-              to="/notifications"
-            >
+            <nuxt-link v-if="!isCollapsed" class="text-white nav-link" to="/#">
               Logout
             </nuxt-link>
           </li>
@@ -95,11 +75,26 @@
 import { inject } from "vue";
 const isCollapsed = inject("isCollapsed");
 const toggleSidebar = inject("toggleSidebar");
+
+function handleResize() {
+  if (window.innerWidth < 1300) {
+    isCollapsed.value = true;
+  } else {
+    isCollapsed.value = false;
+  }
+}
+
+onMounted(() => {
+  handleResize();
+  window.addEventListener("resize", handleResize);
+});
 </script>
 
 <style lang="scss" scoped>
 .container {
   width: 100%;
+  min-width: 75px;
+
   padding: 0 1rem;
   height: 100%;
   transition: width 0.5s ease;
@@ -138,6 +133,12 @@ const toggleSidebar = inject("toggleSidebar");
       .nav-link {
         opacity: 100%;
         transition: 0.3s ease-in-out;
+        color: #fff;
+        text-decoration: none;
+      }
+      .router-link-active {
+        padding-bottom: 5px;
+        border-bottom-style: solid;
       }
     }
   }
