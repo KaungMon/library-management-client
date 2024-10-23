@@ -1,5 +1,5 @@
 <template>
-  <div>Register Page</div>
+  <Register />
 </template>
 
 <script setup></script>

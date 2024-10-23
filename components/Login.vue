@@ -16,29 +16,36 @@
               </div>
             </div>
 
-            <div class="col-12"></div>
+            <div class="col-12">
+              <h1 class="capitalize">welcome back !</h1>
+              <p class="capitalize text-orange-400">
+                fill the form below to login your account.
+              </p>
+            </div>
 
             <div class="col-12">
               <div class="mt-2">
                 <FloatLabel>
                   <InputText
-                    class="bg-white w-11"
+                    class="bg-white w-11 text-700"
                     id="username"
                     v-model="value"
                   />
                   <label for="username">Username</label>
                 </FloatLabel>
               </div>
+              <!-- NOTE - Component nal thone yin background color ka black phyit nay tar yal width yaw bg-color yaw pyoung ma ya loz -->
               <div class="mt-5">
                 <FloatLabel>
-                  <InputText
-                    class="bg-white w-11"
-                    id="password"
-                    v-model="value"
+                  <input
+                    type="password"
+                    style="height: 2.8rem"
+                    class="w-11 border-round"
                   />
                   <label for="password">Password</label>
                 </FloatLabel>
               </div>
+              <!-- !NOTE -->
               <div class="mt-5 flex justify-content-between">
                 <Button
                   class="bg-orange-500 border-none px-4"

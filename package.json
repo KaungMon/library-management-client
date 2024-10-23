@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@primevue/nuxt-module": "^4.1.0",
-    "sass": "^1.79.4"
+    "sass": "^1.79.4",
+    "sass-embedded": "^1.79.5"
   }
 }
