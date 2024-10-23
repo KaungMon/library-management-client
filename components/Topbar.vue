@@ -1,7 +1,7 @@
 <template>
   <div
     class="topbar py-3 px-5 flex justify-content-between align-items-center"
-    :class="['topbar', { expanded: isCollapsed }]"
+    :class="topbar"
   >
     <!-- SECTION - search bar -->
     <div

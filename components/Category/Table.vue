@@ -36,6 +36,9 @@
   </div>
 </template>
 
+<!-- NOTE - pagination lal lote chin tae tal -->
+<!-- NOTE - table ui ka a sa a sone bal lote yin kaung ma lar -->
+
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
@@ -57,6 +60,18 @@ const onRowEditSave = (event) => {
   let { newData, index } = event;
 
   categories.value[index] = newData;
+
+  axios
+    .post("http://127.0.0.1:8000/api/category/update", {
+      categoryId: newData.id,
+      categoryName: newData.category_name,
+    })
+    .then((response) => {
+      console.log(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 </script>
 
