@@ -30,6 +30,12 @@
               </nuxt-link>
             </li>
             <li>
+              <i class="pi pi-prime" style="color: white"></i>
+              <nuxt-link v-if="!isCollapsed" class="nav-link" to="/author">
+                Authors
+              </nuxt-link>
+            </li>
+            <li>
               <i class="pi pi-book" style="color: white"></i>
               <nuxt-link v-if="!isCollapsed" class="nav-link" to="/library">
                 Library

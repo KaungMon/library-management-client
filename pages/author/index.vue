@@ -1,5 +1,7 @@
 <template>
-  <LibraryTable />
+  <div>
+    <AuthorTable />
+  </div>
 </template>
 
 <script setup>
@@ -8,4 +10,4 @@ definePageMeta({
 });
 </script>
 
-<style></style>
+<style lang="scss" scoped></style>

@@ -1,7 +1,7 @@
 <template>
   <div>
     <Button
-      label="Add Category"
+      label="Add Author"
       pt:root="bg-orange-400 border-orange-400 hover:bg-orange-600 border-orange-600 active:bg-orange-800 border-orange-800  "
       @click="visible = true"
       raised
@@ -11,16 +11,14 @@
       v-model:visible="visible"
       modal
       class="bg-white-alpha-30 border-round-3xl"
-      header="Create Category"
+      header="Create Author"
       :style="{ width: '35rem' }"
     >
       <div class="flex align-items-center gap-4 mb-4">
-        <label for="categoryName" class="font-semibold w-24"
-          >Category Name</label
-        >
+        <label for="authorName" class="font-semibold w-24">Author Name</label>
         <InputText
-          id="categoryName"
-          v-model="categoryName"
+          id="authorName"
+          v-model="authorName"
           class="flex-auto bg-white text-900"
           autocomplete="off"
           @keyup.enter="[(visible = false), create()]"
@@ -50,11 +48,11 @@ import axios from "axios";
 
 const visible = ref(false);
 
-const categoryName = ref("");
+const authorName = ref("");
 const create = () => {
   axios
-    .post("http://127.0.0.1:8000/api/category/create", {
-      categoryName: categoryName.value,
+    .post("http://127.0.0.1:8000/api/author/create", {
+      authorName: authorName.value,
     })
     .then((response) => {
       console.log(response.data);
@@ -63,7 +61,6 @@ const create = () => {
     .catch((error) => {
       console.log(error);
     });
-  categoryName.value = "";
 };
 </script>
 
