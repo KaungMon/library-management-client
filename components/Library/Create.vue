@@ -138,9 +138,10 @@ import Select from "primevue/select";
 
 import { ref, onMounted } from "vue";
 
+const config = useRuntimeConfig();
 const visible = ref(false);
 const title = ref();
-const fileupload = ref();
+const fileupload = ref(null);
 const publisher = ref();
 const published_year = ref();
 const selectedGenres = ref([]);
@@ -151,11 +152,12 @@ const errors = ref();
 
 const create = () => {
   errors.value = {};
+  const year = new Date(published_year.value).getFullYear();
 
   const formData = new FormData();
   formData.append("title", title.value);
   formData.append("publisher", publisher.value);
-  formData.append("published_year", published_year.value);
+  formData.append("published_year", year);
   formData.append("author_id", selectedAuthor.value.value);
 
   if (fileupload.value) {
@@ -163,13 +165,23 @@ const create = () => {
   }
 
   axios
-    .post("http://127.0.0.1:8000/api/books/create", formData, {
+    .post(`${config.public.apiBaseUrl}/books/create`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     })
     .then((response) => {
-      console.log(response.data);
+      axios
+        .post(`${config.public.apiBaseUrl}/book_categories/create`, {
+          categories: selectedGenres.value,
+          book_id: response.data.id,
+        })
+        .then((response) => {
+          console.log(response.data);
+        })
+        .catch((error) => {
+          console.log(error.data);
+        });
     })
     .catch((error) => {
       if (error.response && error.response.status == 422) {
@@ -177,22 +189,11 @@ const create = () => {
       }
       console.log(errors.value);
     });
-
-  axios
-    .post("http://127.0.0.1:8000/api/bookcategories/create", {
-      categories: selectedGenres.value,
-    })
-    .then((response) => {
-      console.log(response);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
 };
 
 onMounted(() => {
   axios
-    .get("http://127.0.0.1:8000/api/category/lists")
+    .get(`${config.public.apiBaseUrl}/category/lists`)
     .then((response) => {
       response.data.categories.forEach((category) => {
         genres.value.push({
@@ -206,7 +207,7 @@ onMounted(() => {
     });
 
   axios
-    .get("http://127.0.0.1:8000/api/author/lists")
+    .get(`${config.public.apiBaseUrl}/author/lists`)
     .then((response) => {
       response.data.authors.forEach((author) => {
         authors.value.push({

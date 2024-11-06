@@ -7,26 +7,51 @@
     </div>
     <div class="card">
       <DataTable
-        pt:root="bg-white-alpha-30 border-round px-5 py-5 "
-        pt:table="bg-red-400 p-3"
+        :pt="{
+          root: { class: 'bg-white-alpha-70 border-round' },
+          bodyRow: { class: 'bg-transparent text-900' },
+          headerCell: { class: 'bg-white' },
+        }"
         v-model:editingRows="editingRows"
         :value="authors"
         editMode="row"
         dataKey="id"
         @row-edit-save="onRowEditSave"
       >
-        <Column field="id" header="Id">
-          <template #editor="{ data, field }">
-            <InputText v-model="data[field]" fluid />
-          </template>
-        </Column>
-        <Column field="author_name" class="capitalize" header="Author Name">
-          <template #editor="{ data, field }">
-            <InputText v-model="data[field]" fluid />
-          </template>
-        </Column>
-        <Column field="books" header="Books"></Column>
         <Column
+          :pt="{
+            headerCell: { class: 'bg-transparent text-900' },
+          }"
+          field="id"
+          header="Id"
+        >
+          <template #editor="{ data, field }">
+            <InputText v-model="data[field]" fluid />
+          </template>
+        </Column>
+        <Column
+          :pt="{
+            headerCell: { class: 'bg-transparent text-900' },
+          }"
+          field="author_name"
+          class="capitalize"
+          header="Author Name"
+        >
+          <template #editor="{ data, field }">
+            <InputText v-model="data[field]" fluid />
+          </template>
+        </Column>
+        <Column
+          :pt="{
+            headerCell: { class: 'bg-transparent text-900' },
+          }"
+          field="books_count"
+          header="Books"
+        ></Column>
+        <Column
+          :pt="{
+            headerCell: { class: 'bg-transparent text-900' },
+          }"
           :rowEditor="true"
           style="width: 10%; min-width: 8rem"
           bodyStyle="text-align:center"
@@ -39,12 +64,13 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+const config = useRuntimeConfig();
 const authors = ref();
 const editingRows = ref([]);
 
 onMounted(() => {
   axios
-    .get("http://127.0.0.1:8000/api/author/lists")
+    .get(`${config.public.apiBaseUrl}/author/lists`)
     .then((response) => {
       authors.value = response.data.authors;
     })
@@ -59,7 +85,7 @@ const onRowEditSave = (event) => {
   authors.value[index] = newData;
 
   axios
-    .post("http://127.0.0.1:8000/api/author/update", {
+    .post(`${config.public.apiBaseUrl}/author/update`, {
       authorId: newData.id,
       authorName: newData.author_name,
     })

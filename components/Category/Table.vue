@@ -7,26 +7,51 @@
     </div>
     <div class="card">
       <DataTable
-        pt:root="bg-white-alpha-30 border-round px-5 py-5 "
-        pt:table="bg-red-400 p-3"
+        :pt="{
+          root: { class: 'bg-white-alpha-70 border-round' },
+          bodyRow: { class: 'bg-transparent text-900' },
+          headerCell: { class: 'bg-white' },
+        }"
         v-model:editingRows="editingRows"
         :value="categories"
         editMode="row"
         dataKey="id"
         @row-edit-save="onRowEditSave"
       >
-        <Column field="id" header="Id">
-          <template #editor="{ data, field }">
-            <InputText v-model="data[field]" fluid />
-          </template>
-        </Column>
-        <Column field="category_name" class="capitalize" header="Category Name">
-          <template #editor="{ data, field }">
-            <InputText v-model="data[field]" fluid />
-          </template>
-        </Column>
-        <Column field="books" header="Books"></Column>
         <Column
+          :pt="{
+            headerCell: { class: 'bg-transparent text-900' },
+          }"
+          field="id"
+          header="Id"
+        >
+          <template #editor="{ data, field }">
+            <InputText v-model="data[field]" fluid />
+          </template>
+        </Column>
+        <Column
+          :pt="{
+            headerCell: { class: 'bg-transparent text-900' },
+          }"
+          field="category_name"
+          class="capitalize"
+          header="Category Name"
+        >
+          <template #editor="{ data, field }">
+            <InputText v-model="data[field]" fluid />
+          </template>
+        </Column>
+        <Column
+          :pt="{
+            headerCell: { class: 'bg-transparent text-900' },
+          }"
+          field="books_count"
+          header="Books"
+        ></Column>
+        <Column
+          :pt="{
+            headerCell: { class: 'bg-transparent text-900' },
+          }"
           :rowEditor="true"
           style="width: 10%; min-width: 8rem"
           bodyStyle="text-align:center"
@@ -42,14 +67,16 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
+const config = useRuntimeConfig();
 const categories = ref();
 const editingRows = ref([]);
 
 onMounted(() => {
   axios
-    .get("http://127.0.0.1:8000/api/category/lists")
+    .get(`${config.public.apiBaseUrl}/category/lists`)
     .then((response) => {
       categories.value = response.data.categories;
+      console.log(categories.value);
     })
     .catch((error) => {
       console.log(error);
@@ -62,7 +89,7 @@ const onRowEditSave = (event) => {
   categories.value[index] = newData;
 
   axios
-    .post("http://127.0.0.1:8000/api/category/update", {
+    .post(`${config.public.apiBaseUrl}/category/update`, {
       categoryId: newData.id,
       categoryName: newData.category_name,
     })
