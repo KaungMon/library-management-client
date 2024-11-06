@@ -25,9 +25,6 @@
           field="id"
           header="Id"
         >
-          <template #editor="{ data, field }">
-            <InputText v-model="data[field]" fluid />
-          </template>
         </Column>
         <Column
           :pt="{
@@ -38,7 +35,11 @@
           header="Author Name"
         >
           <template #editor="{ data, field }">
-            <InputText v-model="data[field]" fluid />
+            <InputText
+              :pt="{ root: { class: 'bg-white-alpha-40 text-900' } }"
+              v-model="data[field]"
+              fluid
+            />
           </template>
         </Column>
         <Column

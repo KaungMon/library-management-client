@@ -41,7 +41,11 @@
           header="Title"
         >
           <template #editor="{ data, field }">
-            <InputText v-model="data[field]" fluid />
+            <InputText
+              :pt="{ root: { class: 'bg-white-alpha-40 text-900' } }"
+              v-model="data[field]"
+              fluid
+            />
           </template>
         </Column>
         <Column
@@ -53,7 +57,11 @@
           class="capitalize"
         >
           <template #editor="{ data, field }">
-            <InputText v-model="data[field]" fluid />
+            <InputText
+              :pt="{ root: { class: 'bg-white-alpha-40 text-900' } }"
+              v-model="data[field]"
+              fluid
+            />
           </template>
         </Column>
         <Column
@@ -65,7 +73,11 @@
           header="Published Year"
         >
           <template #editor="{ data, field }">
-            <InputText v-model="data[field]" fluid />
+            <InputText
+              :pt="{ root: { class: 'bg-white-alpha-40 text-900' } }"
+              v-model="data[field]"
+              fluid
+            />
           </template>
         </Column>
         <Column

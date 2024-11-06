@@ -11,9 +11,30 @@
           root: { class: 'bg-white-alpha-70 border-round' },
           bodyRow: { class: 'bg-transparent text-900' },
           headerCell: { class: 'bg-white' },
+          pcPaginator: {
+            root: { class: 'bg-transparent' },
+            content: { class: 'bg-white-alpha-40 border-round' },
+            first: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            prev: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            next: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            last: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            page: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            pcRowPerPageDropdown: {
+              root: { class: 'bg-transparent' },
+              label: { class: 'text-900' },
+              overlay: { class: 'bg-white-alpha-50' },
+              option: {
+                class:
+                  'text-900 hover:bg-blue-800 hover:text-0 select:bg-blue-500',
+              },
+            },
+          },
         }"
         v-model:editingRows="editingRows"
         :value="categories"
+        paginator
+        :rows="5"
+        :rowsPerPageOptions="[5, 10, 20, 50]"
         editMode="row"
         dataKey="id"
         @row-edit-save="onRowEditSave"
@@ -25,9 +46,6 @@
           field="id"
           header="Id"
         >
-          <template #editor="{ data, field }">
-            <InputText v-model="data[field]" fluid />
-          </template>
         </Column>
         <Column
           :pt="{
@@ -38,7 +56,11 @@
           header="Category Name"
         >
           <template #editor="{ data, field }">
-            <InputText v-model="data[field]" fluid />
+            <InputText
+              :pt="{ root: { class: 'bg-white-alpha-40 text-900' } }"
+              v-model="data[field]"
+              fluid
+            />
           </template>
         </Column>
         <Column
