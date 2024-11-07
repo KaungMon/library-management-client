@@ -8,7 +8,7 @@
     <div class="card">
       <DataTable
         :pt="{
-          root: { class: 'bg-white-alpha-70 border-round' },
+          root: { class: 'bg-white-alpha-70 border-round-top-lg px-3 pt-2' },
           bodyRow: { class: 'bg-transparent text-900' },
           headerCell: { class: 'bg-white' },
         }"
@@ -26,7 +26,7 @@
         >
           <template #body="{ data }">
             <img
-              :src="`http://127.0.0.1:8000/storage/image/${data.image}`"
+              :src="`${config.public.baseUrl}/storage/image/${data.image}`"
               class="w-24 rounded"
               width="64"
             />
@@ -107,6 +107,32 @@
           bodyStyle="text-align:center"
         ></Column>
       </DataTable>
+      <Paginator
+        :pt="{
+          root: { class: 'bg-white-alpha-70 border-round-bottom-lg' },
+          content: { class: 'bg-white-alpha-40' },
+          first: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+          prev: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+          next: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+          last: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+          page: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+          pcRowPerPageDropdown: {
+            root: { class: 'bg-transparent' },
+            label: { class: 'text-900' },
+            overlay: { class: 'bg-white-alpha-50' },
+            option: {
+              class:
+                'text-900 hover:bg-blue-800 hover:text-0 select:bg-blue-500',
+            },
+          },
+        }"
+        :rows="rowsPerPage"
+        @page="onPageChange"
+        :totalRecords="totalRecords"
+        :rowsPerPageOptions="[4, 8, 16]"
+        @update:rows="onRowsPerPageChange"
+      >
+      </Paginator>
     </div>
   </div>
 </template>
@@ -116,22 +142,40 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 const config = useRuntimeConfig();
 const books = ref();
+const currentPage = ref(1);
+const rowsPerPage = ref(4);
+const totalRecords = ref();
 const editingRows = ref([]);
 
 onMounted(() => {
+  fetchBooks();
+});
+
+const fetchBooks = (page = 1, rows = rowsPerPage.value) => {
   axios
-    .get(`${config.public.apiBaseUrl}/books/lists`)
+    .get(`${config.public.apiBaseUrl}/books/lists?page=${page}&rows=${rows}`)
     .then((response) => {
-      response.data.books.forEach((book) => {
+      let data = response.data.books.data;
+      data.forEach((book) => {
         book.categories = book.categories.join(", ");
       });
-      books.value = response.data.books;
-      console.log(response.data.books);
+      books.value = data;
+      totalRecords.value = response.data.books.total;
     })
     .catch((error) => {
       console.log(error);
     });
-});
+};
+
+const onPageChange = (event) => {
+  currentPage.value = event.page + 1;
+  fetchBooks(currentPage.value, rowsPerPage.value);
+};
+
+const onRowsPerPageChange = (event) => {
+  rowsPerPage.value = event;
+  fetchBooks(1, rowsPerPage.value);
+};
 
 const onRowEditSave = (event) => {
   let { newData, index } = event;

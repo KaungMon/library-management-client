@@ -8,7 +8,7 @@
     <div class="card">
       <DataTable
         :pt="{
-          root: { class: 'bg-white-alpha-70 border-round' },
+          root: { class: 'bg-white-alpha-70 border-round px-3 pt-2' },
           bodyRow: { class: 'bg-transparent text-900' },
           headerCell: { class: 'bg-white' },
           pcPaginator: {

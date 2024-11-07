@@ -178,6 +178,12 @@ const create = () => {
         })
         .then((response) => {
           console.log(response.data);
+          title.value = "";
+          publisher.value = "";
+          published_year.value = "";
+          selectedAuthor.value = "";
+          selectedGenres.value = [];
+          location.reload();
         })
         .catch((error) => {
           console.log(error.data);
