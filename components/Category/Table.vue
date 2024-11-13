@@ -3,7 +3,10 @@
     <div class="header flex justify-content-between align-items-center">
       <h1 class="font-italic">Manage Categories</h1>
 
-      <CategoryCreate />
+      <div class="flex justify-content-center align-items-center gap-4">
+        <SearchBar @keySent="handleSearchKey" />
+        <CategoryCreate />
+      </div>
     </div>
     <div class="card">
       <DataTable
@@ -92,10 +95,15 @@ import axios from "axios";
 const config = useRuntimeConfig();
 const categories = ref();
 const editingRows = ref([]);
+const key = ref("");
 
-onMounted(() => {
+const fetchCategories = () => {
   axios
-    .get(`${config.public.apiBaseUrl}/category/lists`)
+    .get(`${config.public.apiBaseUrl}/category/lists`, {
+      params: {
+        key: key.value,
+      },
+    })
     .then((response) => {
       categories.value = response.data.categories;
       console.log(categories.value);
@@ -103,6 +111,15 @@ onMounted(() => {
     .catch((error) => {
       console.log(error);
     });
+};
+
+const handleSearchKey = (search_key) => {
+  key.value = search_key;
+  fetchCategories();
+};
+
+onMounted(() => {
+  fetchCategories();
 });
 
 const onRowEditSave = (event) => {

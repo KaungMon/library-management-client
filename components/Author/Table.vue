@@ -2,8 +2,11 @@
   <div>
     <div class="header flex justify-content-between align-items-center">
       <h1 class="font-italic">Manage Authors</h1>
+      <div class="flex justify-content-center align-items-center gap-4">
+        <SearchBar @keySent="handleSearchKey" />
 
-      <AuthorCreate />
+        <AuthorCreate />
+      </div>
     </div>
     <div class="card">
       <DataTable
@@ -11,9 +14,30 @@
           root: { class: 'bg-white-alpha-70 border-round px-3 pt-2' },
           bodyRow: { class: 'bg-transparent text-900' },
           headerCell: { class: 'bg-white' },
+          pcPaginator: {
+            root: { class: 'bg-transparent' },
+            content: { class: 'bg-white-alpha-40 border-round' },
+            first: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            prev: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            next: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            last: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            page: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            pcRowPerPageDropdown: {
+              root: { class: 'bg-transparent' },
+              label: { class: 'text-900' },
+              overlay: { class: 'bg-white-alpha-50' },
+              option: {
+                class:
+                  'text-900 hover:bg-blue-800 hover:text-0 select:bg-blue-500',
+              },
+            },
+          },
         }"
         v-model:editingRows="editingRows"
         :value="authors"
+        paginator
+        :rows="5"
+        :rowsPerPageOptions="[5, 10, 20]"
         editMode="row"
         dataKey="id"
         @row-edit-save="onRowEditSave"
@@ -68,16 +92,30 @@ import axios from "axios";
 const config = useRuntimeConfig();
 const authors = ref();
 const editingRows = ref([]);
+const key = ref("");
 
-onMounted(() => {
+const handleSearchKey = (search_key) => {
+  key.value = search_key;
+  fetchAuthorData();
+};
+
+const fetchAuthorData = () => {
   axios
-    .get(`${config.public.apiBaseUrl}/author/lists`)
+    .get(`${config.public.apiBaseUrl}/author/lists`, {
+      params: {
+        key: key.value,
+      },
+    })
     .then((response) => {
       authors.value = response.data.authors;
     })
     .catch((error) => {
       console.log(error);
     });
+};
+
+onMounted(() => {
+  fetchAuthorData();
 });
 
 const onRowEditSave = (event) => {
