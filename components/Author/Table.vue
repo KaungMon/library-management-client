@@ -11,8 +11,29 @@
           root: { class: 'bg-white-alpha-70 border-round px-3 pt-2' },
           bodyRow: { class: 'bg-transparent text-900' },
           headerCell: { class: 'bg-white' },
+          pcPaginator: {
+            root: { class: 'bg-transparent' },
+            content: { class: 'bg-white-alpha-40 border-round' },
+            first: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            prev: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            next: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            last: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            page: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
+            pcRowPerPageDropdown: {
+              root: { class: 'bg-transparent' },
+              label: { class: 'text-900' },
+              overlay: { class: 'bg-white-alpha-50' },
+              option: {
+                class:
+                  'text-900 hover:bg-blue-800 hover:text-0 select:bg-blue-500',
+              },
+            },
+          },
         }"
         v-model:editingRows="editingRows"
+        paginator
+        :rows="5"
+        :rowsPerPageOptions="[5, 10, 20]"
         :value="authors"
         editMode="row"
         dataKey="id"

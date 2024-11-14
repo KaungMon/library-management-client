@@ -26,7 +26,14 @@
         >
           <template #body="{ data }">
             <img
+              v-if="data.image != null"
               :src="`${config.public.baseUrl}/storage/image/${data.image}`"
+              class="w-24 rounded"
+              width="64"
+            />
+            <img
+              v-else
+              src="/public/img/images.png"
               class="w-24 rounded"
               width="64"
             />
