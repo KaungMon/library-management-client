@@ -141,9 +141,25 @@
             headerCell: { class: 'bg-transparent text-900' },
           }"
           :rowEditor="true"
-          style="width: 10%; min-width: 8rem"
+          style="width: 5%; min-width: 4rem"
           bodyStyle="text-align:center"
         ></Column>
+        <Column
+          :pt="{
+            headerCell: { class: 'bg-transparent' },
+          }"
+          style="width: 5%; min-width: 4rem"
+        >
+          <template #body="{ data }">
+            <Button
+              icon="pi pi-trash"
+              severity="danger"
+              variant="outlined"
+              @click="selectRow(data)"
+              rounded
+            ></Button>
+          </template>
+        </Column>
       </DataTable>
       <!-- !SECTION -->
       <!-- SECTION - Paginator -->
@@ -259,6 +275,18 @@ const onRowEditSave = (event) => {
     .catch((error) => {
       console.log(error.data);
     }); */
+};
+
+const selectRow = (data) => {
+  const id = data.id;
+  axios
+    .get(`${config.public.apiBaseUrl}/books/delete/${id}`)
+    .then((response) => {
+      response.data.message ? location.reload() : console.log("Error");
+    })
+    .catch((error) => {
+      console.log(error);
+    });
 };
 </script>
 

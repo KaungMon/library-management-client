@@ -81,6 +81,22 @@
           style="width: 10%; min-width: 8rem"
           bodyStyle="text-align:center"
         ></Column>
+        <Column
+          :pt="{
+            headerCell: { class: 'bg-transparent' },
+          }"
+          style="width: 10%; min-width: 8rem"
+        >
+          <template #body="{ data }">
+            <Button
+              icon="pi pi-trash"
+              severity="danger"
+              variant="outlined"
+              @click="selectRow(data)"
+              rounded
+            ></Button>
+          </template>
+        </Column>
       </DataTable>
     </div>
   </div>
@@ -137,6 +153,18 @@ const onRowEditSave = (event) => {
     })
     .catch((error) => {
       console.log(error);
+    });
+};
+
+const selectRow = (data) => {
+  const id = data.id;
+  axios
+    .get(`${config.public.apiBaseUrl}/category/delete/${id}`)
+    .then((response) => {
+      response.data.message ? location.reload() : console.log("Error");
+    })
+    .catch((error) => {
+      console.log(error.message);
     });
 };
 </script>
