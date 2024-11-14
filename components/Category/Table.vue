@@ -3,7 +3,10 @@
     <div class="header flex justify-content-between align-items-center">
       <h1 class="font-italic">Manage Categories</h1>
 
-      <CategoryCreate />
+      <div class="flex justify-content-center align-items-center gap-4">
+        <SearchBar @keySent="handleSearchKey" />
+        <CategoryCreate />
+      </div>
     </div>
     <div class="card">
       <DataTable
@@ -78,6 +81,22 @@
           style="width: 10%; min-width: 8rem"
           bodyStyle="text-align:center"
         ></Column>
+        <Column
+          :pt="{
+            headerCell: { class: 'bg-transparent' },
+          }"
+          style="width: 10%; min-width: 8rem"
+        >
+          <template #body="{ data }">
+            <Button
+              icon="pi pi-trash"
+              severity="danger"
+              variant="outlined"
+              @click="selectRow(data)"
+              rounded
+            ></Button>
+          </template>
+        </Column>
       </DataTable>
     </div>
   </div>
@@ -92,10 +111,15 @@ import axios from "axios";
 const config = useRuntimeConfig();
 const categories = ref();
 const editingRows = ref([]);
+const key = ref("");
 
-onMounted(() => {
+const fetchCategories = () => {
   axios
-    .get(`${config.public.apiBaseUrl}/category/lists`)
+    .get(`${config.public.apiBaseUrl}/category/lists`, {
+      params: {
+        key: key.value,
+      },
+    })
     .then((response) => {
       categories.value = response.data.categories;
       console.log(categories.value);
@@ -103,6 +127,15 @@ onMounted(() => {
     .catch((error) => {
       console.log(error);
     });
+};
+
+const handleSearchKey = (search_key) => {
+  key.value = search_key;
+  fetchCategories();
+};
+
+onMounted(() => {
+  fetchCategories();
 });
 
 const onRowEditSave = (event) => {
@@ -120,6 +153,18 @@ const onRowEditSave = (event) => {
     })
     .catch((error) => {
       console.log(error);
+    });
+};
+
+const selectRow = (data) => {
+  const id = data.id;
+  axios
+    .get(`${config.public.apiBaseUrl}/category/delete/${id}`)
+    .then((response) => {
+      response.data.message ? location.reload() : console.log("Error");
+    })
+    .catch((error) => {
+      console.log(error.message);
     });
 };
 </script>

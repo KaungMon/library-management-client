@@ -2,10 +2,14 @@
   <div>
     <div class="header flex justify-content-between align-items-center">
       <h1 class="font-italic">Manage Authors</h1>
+      <div class="flex justify-content-center align-items-center gap-4">
+        <SearchBar @keySent="handleSearchKey" />
 
-      <AuthorCreate />
+        <AuthorCreate />
+      </div>
     </div>
     <div class="card">
+      <!-- SECTION - Table -->
       <DataTable
         :pt="{
           root: { class: 'bg-white-alpha-70 border-round px-3 pt-2' },
@@ -35,10 +39,14 @@
         :rows="5"
         :rowsPerPageOptions="[5, 10, 20]"
         :value="authors"
+        paginator
+        :rows="5"
+        :rowsPerPageOptions="[5, 10, 20]"
         editMode="row"
         dataKey="id"
         @row-edit-save="onRowEditSave"
       >
+        <!-- SECTION - ID -->
         <Column
           :pt="{
             headerCell: { class: 'bg-transparent text-900' },
@@ -47,6 +55,8 @@
           header="Id"
         >
         </Column>
+        <!-- !SECTION -->
+        <!-- SECTION - Author Name -->
         <Column
           :pt="{
             headerCell: { class: 'bg-transparent text-900' },
@@ -63,6 +73,8 @@
             />
           </template>
         </Column>
+        <!-- !SECTION -->
+        <!-- SECTION - Book Count -->
         <Column
           :pt="{
             headerCell: { class: 'bg-transparent text-900' },
@@ -70,6 +82,7 @@
           field="books_count"
           header="Books"
         ></Column>
+        <!-- !SECTION -->
         <Column
           :pt="{
             headerCell: { class: 'bg-transparent text-900' },
@@ -77,8 +90,28 @@
           :rowEditor="true"
           style="width: 10%; min-width: 8rem"
           bodyStyle="text-align:center"
-        ></Column>
+        >
+        </Column>
+        <!-- SECTION - delete button -->
+        <Column
+          :pt="{
+            headerCell: { class: 'bg-transparent' },
+          }"
+          style="width: 10%; min-width: 8rem"
+        >
+          <template #body="{ data }">
+            <Button
+              icon="pi pi-trash"
+              severity="danger"
+              variant="outlined"
+              @click="selectRow(data)"
+              rounded
+            ></Button>
+          </template>
+        </Column>
+        <!-- !SECTION -->
       </DataTable>
+      <!-- !SECTION -->
     </div>
   </div>
 </template>
@@ -89,16 +122,30 @@ import axios from "axios";
 const config = useRuntimeConfig();
 const authors = ref();
 const editingRows = ref([]);
+const key = ref("");
 
-onMounted(() => {
+const handleSearchKey = (search_key) => {
+  key.value = search_key;
+  fetchAuthorData();
+};
+
+const fetchAuthorData = () => {
   axios
-    .get(`${config.public.apiBaseUrl}/author/lists`)
+    .get(`${config.public.apiBaseUrl}/author/lists`, {
+      params: {
+        key: key.value,
+      },
+    })
     .then((response) => {
       authors.value = response.data.authors;
     })
     .catch((error) => {
       console.log(error);
     });
+};
+
+onMounted(() => {
+  fetchAuthorData();
 });
 
 const onRowEditSave = (event) => {
@@ -113,6 +160,18 @@ const onRowEditSave = (event) => {
     })
     .then((response) => {
       console.log(response.data);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+};
+
+const selectRow = (data) => {
+  const id = data.id;
+  axios
+    .get(`${config.public.apiBaseUrl}/author/delete/${id}`)
+    .then((response) => {
+      response.data ? location.reload() : console.log("Error");
     })
     .catch((error) => {
       console.log(error);
