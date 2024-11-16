@@ -54,13 +54,6 @@
           class="capitalize"
           header="Title"
         >
-          <template #editor="{ data, field }">
-            <InputText
-              :pt="{ root: { class: 'bg-white-alpha-40 text-900' } }"
-              v-model="data[field]"
-              fluid
-            />
-          </template>
         </Column>
         <!-- !SECTION -->
         <!-- SECTION - Publisher -->
@@ -72,13 +65,6 @@
           header="Publisher"
           class="capitalize"
         >
-          <template #editor="{ data, field }">
-            <InputText
-              :pt="{ root: { class: 'bg-white-alpha-40 text-900' } }"
-              v-model="data[field]"
-              fluid
-            />
-          </template>
         </Column>
         <!-- !SECTION -->
         <!-- SECTION - Published Year -->
@@ -90,13 +76,6 @@
           class="capitalize"
           header="Published Year"
         >
-          <template #editor="{ data, field }">
-            <InputText
-              :pt="{ root: { class: 'bg-white-alpha-40 text-900' } }"
-              v-model="data[field]"
-              fluid
-            />
-          </template>
         </Column>
         <!-- !SECTION -->
         <!-- SECTION - Author Name -->
@@ -108,28 +87,6 @@
           class="capitalize"
           header="Author"
         >
-          <template #editor="{ data, field }">
-            <Select
-              :pt="{
-                root: { class: 'bg-white' },
-                label: {
-                  class: 'bg-white capitalize text-500 px-1',
-                },
-                overlay: { class: 'bg-white' },
-                option: {
-                  class:
-                    'text-900 hover:bg-blue-700 hover:text-200 active:bg-blue-900',
-                },
-              }"
-              v-model="data[field]"
-              :options="authors"
-              optionLabel="name"
-              optionValue="name"
-              placeholder="Select a author"
-              fluid
-            >
-            </Select>
-          </template>
         </Column>
         <!-- !SECTION -->
         <!-- SECTION - Categories -->
@@ -145,20 +102,20 @@
         <!-- !SECTION -->
         <Column
           :pt="{
-            headerCell: { class: 'bg-transparent text-900' },
-          }"
-          :rowEditor="true"
-          style="width: 5%; min-width: 4rem"
-          bodyStyle="text-align:center"
-        ></Column>
-        <Column
-          :pt="{
             headerCell: { class: 'bg-transparent' },
           }"
-          style="width: 5%; min-width: 4rem"
+          style="width: 10%; min-width: 8rem"
         >
           <template #body="{ data }">
             <Button
+              icon="pi pi-pencil"
+              severity="info"
+              variant="outlined"
+              @click="editRow(data)"
+              rounded
+            ></Button>
+            <Button
+              class="ml-2"
               icon="pi pi-trash"
               severity="danger"
               variant="outlined"
@@ -215,6 +172,7 @@ const editingRows = ref([]);
 const receivedData = ref("");
 const authors = ref([]);
 const key = ref("");
+const router = useRouter();
 const { fetchCategories } = getCategoryLists();
 const { fetchAuthors } = getAuthorLists();
 
@@ -261,29 +219,6 @@ const onRowsPerPageChange = (event) => {
   fetchBooks(1, rowsPerPage.value);
 };
 
-const onRowEditSave = (event) => {
-  let { newData, index } = event;
-  books.value[index] = newData;
-  console.log(event);
-  console.log(newData);
-
-  /* axios
-    .post(`${config.public.apiBaseUrl}/books/update`, {
-      id: newData.id,
-      title: newData.title,
-      publisher: newData.publisher,
-      published_year: newData.published_year,
-      author_id: newData.author_name,
-    })
-    .then((response) => {
-      console.log(response.data);
-      location.reload();
-    })
-    .catch((error) => {
-      console.log(error.data);
-    }); */
-};
-
 const selectRow = (data) => {
   const id = data.id;
   axios
@@ -294,6 +229,10 @@ const selectRow = (data) => {
     .catch((error) => {
       console.log(error);
     });
+};
+
+const editRow = (data) => {
+  router.push(`library/edit/${data.id}`);
 };
 </script>
 

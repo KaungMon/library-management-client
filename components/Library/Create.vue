@@ -119,7 +119,7 @@
             v-model="selectedAuthor"
             :options="authors"
             :invalid="!selectedAuthor && submitted"
-            optionLabel="name"
+            optionLabel="author_name"
             placeholder="Select author"
             class="flex-auto col"
           />
@@ -228,7 +228,7 @@ const validationCheck = () => {
       name: "author",
       value: selectedAuthor.value,
       message: "Author field is required.",
-      check: (value) => !value.name || !value.value,
+      check: (value) => !value.author_name || !value.id,
     },
     {
       name: "genres",
@@ -264,7 +264,7 @@ const create = () => {
   formData.append("title", title.value);
   formData.append("publisher", publisher.value);
   formData.append("published_year", year);
-  formData.append("author_id", selectedAuthor.value.value);
+  formData.append("author_id", selectedAuthor.value.id);
   formData.append(
     "has_genres",
     selectedGenres.value.length <= 0 ? false : true
@@ -305,7 +305,7 @@ const create = () => {
           author: messages.author_id[0],
           genres: messages.has_genres[0],
         };
-        console.log(messages);
+        console.log(errors.value);
       }
     });
 };

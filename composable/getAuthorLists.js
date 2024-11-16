@@ -7,8 +7,8 @@ export const getAuthorLists = () => {
       .then((response) => {
         response.data.authors.forEach((author) => {
           authors.push({
-            name: author.author_name,
-            value: author.id,
+            author_name: author.author_name,
+            id: author.id,
           });
         });
       })

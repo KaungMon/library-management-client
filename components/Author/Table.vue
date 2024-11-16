@@ -39,9 +39,6 @@
         :rows="5"
         :rowsPerPageOptions="[5, 10, 20]"
         :value="authors"
-        paginator
-        :rows="5"
-        :rowsPerPageOptions="[5, 10, 20]"
         editMode="row"
         dataKey="id"
         @row-edit-save="onRowEditSave"
