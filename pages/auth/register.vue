@@ -1,7 +1,7 @@
 <template>
-  <Register />
+  <div><RegisterLayout /></div>
 </template>
 
 <script setup></script>
 
-<style></style>
+<style lang="scss" scoped></style>
