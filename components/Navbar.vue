@@ -42,6 +42,12 @@
               </nuxt-link>
             </li>
             <li>
+              <IconsRoundMenuBook class="pi" style="color: white; font-size: 1.3em;" />
+              <nuxt-link v-if="!isCollapsed" class="nav-link" to="/borrowing_log">
+                Log Book
+              </nuxt-link>
+            </li>
+            <li>
               <i class="pi pi-bell" style="color: white"></i>
               <nuxt-link
                 v-if="!isCollapsed"

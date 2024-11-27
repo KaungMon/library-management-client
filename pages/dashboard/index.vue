@@ -1,5 +1,5 @@
 <template>
-  <div>Dashboard Page <Button label="Success" severity="success" /></div>
+  <div>Dashboard Page <Button class="btn" label="Success" /></div>
 </template>
 
 <script setup>
@@ -8,4 +8,10 @@ definePageMeta({
 });
 </script>
 
-<style></style>
+<style lang="scss">
+.btn {
+  .p-button {
+    background-color: red;
+  }
+}
+</style>
