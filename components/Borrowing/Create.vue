@@ -1,70 +1,56 @@
 <template>
-  <Card
-      :pt="{
-        root: { class: 'bg-white-alpha-50 rounded p-4' },
-        header: {
-          class:
-            'mt-3 ml-3 text-xl text-900 cursor-pointer mb-4  hover:underline',
-        },
-        content: { class: 'mb-4' },
-      }"
-    >
+  <Card>
       <!-- SECTION - back button -->
       <template #header>
-        <span @click="back"> <i class="pi pi-chevron-left"></i> Back </span>
+        <span class="block pt-5 pl-3" @click="back"> <i class="pi pi-chevron-left"></i> Back </span>
       </template>
       <!-- !SECTION -->
       <template #content>
         <!-- SECTION - Form -->
-        <Form @submit="onFormSubmit" class="grid">
-          <div class="col-12">
-            <div class="grid">
+        <Form @submit="onFormSubmit">
+            <div>
               <!-- SECTION - Book -->
-              <div class="col-6">
-                <label>Book Name</label>
-                <Select 
-                :pt="selectStyle"
-                v-model="selectedBooks" editable :options="books" optionLabel="name" placeholder="Select a Book" class="w-full md:w-56" />
+              <div class="grid grid-cols-4 mb-3 items-center">
+                <label class="col-span-2">Book Name</label>
+                <Select
+                v-model="selectedBooks" editable :options="books" optionLabel="name" placeholder="Select a Book" class="col-span-2" />
               </div>
               <!-- !SECTION -->
               <!-- SECTION - Librarian Name -->
-              <div class="col-6">
-                <label>Librarian Name</label>
+              <div class="grid grid-cols-4 mb-3 items-center">
+                <label class="col-span-2">Librarian Name</label>
                 <Select 
-                :pt="selectStyle" 
-                v-model="selectedLibrarian" editable :options="librarians" optionLabel="name" placeholder="Enter Your Name" class="w-full md:w-56" />
+                v-model="selectedLibrarian" editable :options="librarians" optionLabel="name" placeholder="Enter Your Name" class="col-span-2" />
               </div>
               <!-- !SECTION -->
               <!-- SECTION - member name -->
-              <div class="col-6">
-                <label>Member Name</label>
+              <div class="grid grid-cols-4 mb-3 items-center">
+                <label class="col-span-2">Member Name</label>
                 <Select 
-                :pt="selectStyle" 
-                v-model="selectedMember" editable :options="members" optionLabel="name" placeholder="Enter Member Name" class="w-full md:w-56" />
+                v-model="selectedMember" editable :options="members" optionLabel="name" placeholder="Enter Member Name" class="col-span-2" />
               </div>
               <!-- !SECTION -->
               <!-- SECTION - borrowing period -->
-              <div class="col-6">
-                <label>Borrowing Period</label>
-                <InputNumber :pt="numberStyle" v-model="borrowing_period" prefix="Allow to keep " suffix=" days" fluid />
+              <div class="grid grid-cols-4 mb-3 items-center">
+                <label class="col-span-2">Borrowing Period</label>
+                <InputNumber class="col-span-2" :pt="numberStyle" v-model="borrowing_period" prefix="Allow to keep " suffix=" days" fluid />
               </div>
               <!-- !SECTION -->
               <!-- SECTION - borrow date -->
-              <div class="col-6">
-                <label>Borrow Date</label>
-                <DatePicker :pt="dayPickerStyle" v-model="borrow_date" showIcon fluid iconDisplay="input" />
+              <div class="grid grid-cols-4 mb-3 items-center">
+                <label class="col-span-2">Borrow Date</label>
+                <DatePicker class="col-span-2" v-model="borrow_date" showIcon fluid iconDisplay="input" />
               </div>
               <!-- !SECTION -->
               <!-- SECTION - due date -->
-              <div class="col-6">
-                <label>Due Date</label>
-                <DatePicker :pt="dayPickerStyle" v-model="due_date" showIcon fluid iconDisplay="input" disabled />
+              <div class="grid grid-cols-4 mb-3 items-center">
+                <label class="col-span-2">Due Date</label>
+                <DatePicker class="col-span-2" v-model="due_date" showIcon fluid iconDisplay="input" disabled />
               </div>
               <!-- !SECTION -->
             </div>
-          </div>
-          <div class="col-12 flex justify-content-end">
-            <Button @click="add"  :pt="{root: {class: 'bg-orange-400'}}" label="Submit"></Button>
+          <div>
+            <Button @click="add" label="Submit"></Button>
           </div>
         </Form>
         <!-- !SECTION -->
@@ -152,40 +138,6 @@ const fetchUsers = () => {
 const back = () => {
   router.push(`/borrowing_log`)
 }
-
-const selectStyle = {
-  root: { class: 'bg-white border-none mt-1' },
-  label: {
-    class: 'bg-white capitalize text-900 px-1',
-  },
-  overlay: { class: 'bg-white' },
-  option: {
-    class:
-      'text-900 hover:bg-blue-700 hover:text-200 active:bg-blue-900',
-  },
-}
-
-const dayPickerStyle = {
-  pcInputText : {
-    root : {class : 'bg-white text-900'}
-  },
-  panel : {class : 'bg-white'},
-  header : {class : 'bg-white'},
-  pcPrevButton: {root : {class: 'text-900 hover:bg-blue-700 hover:text-50'}},
-  selectMonth : {class : 'text-900 hover:bg-blue-700 hover:text-50'},
-  selectYear : {class : 'text-900 hover:bg-blue-700 hover:text-50'},
-  decade : {class: 'text-900'},
-  pcNextButton: {root : {class: 'text-900 hover:bg-blue-700 hover:text-50'}},
-  weekDay : {class : 'text-900'},
-  day : {class : 'text-900'}
-}
-
-const numberStyle = {
-  pcInputText : {
-    root : {class : 'bg-white text-900'}
-  }
-}
-
 </script>
 
 <style lang="scss">

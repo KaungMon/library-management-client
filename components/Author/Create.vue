@@ -14,7 +14,7 @@
       header="Create Author"
       :style="{ width: '35rem' }"
     >
-      <div class="flex align-items-center gap-4 mb-4">
+      <div class="flex items-center gap-4 mb-4">
         <label for="authorName" class="font-semibold w-24">Author Name</label>
         <InputText
           id="authorName"

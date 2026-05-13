@@ -1,92 +1,124 @@
 <template>
-  <div class="container" :class="[{ collapsed: isCollapsed }]">
-    <div class="navbar py-2 h-full">
-      <div>
-        <!-- SECTION - logo -->
-        <div @click="toggleSidebar" class="logo flex align-items-center">
-          <div class="inline-block mr-2">
-            <img class="w-4rem" src="/public/icons/Logo.svg" alt="Logo" />
-          </div>
-          <h3 v-if="!isCollapsed" class="inline-block">
-            <span>Admin</span>
-            <span class="block">Dashboard</span>
-          </h3>
-        </div>
-        <!-- !SECTION -->
-        <hr class="divider" />
-        <!-- SECTION - menu -->
-        <div>
-          <ul class="p-0 my-5">
-            <li>
-              <i class="pi pi-home" style="color: white"></i>
-              <nuxt-link v-if="!isCollapsed" class="nav-link" to="/dashboard">
-                Dashboard
-              </nuxt-link>
-            </li>
-            <li>
-              <i class="pi pi-list" style="color: white"></i>
-              <nuxt-link v-if="!isCollapsed" class="nav-link" to="/categories">
-                Categories
-              </nuxt-link>
-            </li>
-            <li>
-              <i class="pi pi-prime" style="color: white"></i>
-              <nuxt-link v-if="!isCollapsed" class="nav-link" to="/author">
-                Authors
-              </nuxt-link>
-            </li>
-            <li>
-              <i class="pi pi-book" style="color: white"></i>
-              <nuxt-link v-if="!isCollapsed" class="nav-link" to="/library">
-                Library
-              </nuxt-link>
-            </li>
-            <li>
-              <IconsRoundMenuBook class="pi" style="color: white; font-size: 1.3em;" />
-              <nuxt-link v-if="!isCollapsed" class="nav-link" to="/borrowing_log">
-                Log Book
-              </nuxt-link>
-            </li>
-            <li>
-              <i class="pi pi-bell" style="color: white"></i>
-              <nuxt-link
-                v-if="!isCollapsed"
-                class="nav-link"
-                to="/notifications"
-              >
-                Notifications
-              </nuxt-link>
-            </li>
-          </ul>
-        </div>
-        <!-- !SECTION -->
-      </div>
-      <!-- SECTION - logout and help -->
-      <div class="flex flex-column">
-        <ul class="p-0">
-          <li>
-            <i class="pi pi-info-circle" style="color: white"></i>
-            <nuxt-link v-if="!isCollapsed" class="nav-link" to="/#">
-              Help and Info
+ <!--  <ScrollPanel class="h-full invisible" :class="[{ collapsed: isCollapsed }]">
+    <div class="navbar py-5 px-7 h-full rounded-lg bg-(--p-content-background)">
+      // SECTION - flex column between two ul
+      <div class="h-full flex flex-col justify-between">
+        // SECTION - menu
+        <ul>
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link exact to="/dashboard">
+              <i class="pi pi-home mr-2 pb-1"></i>Dashboard
             </nuxt-link>
           </li>
-          <li>
-            <i class="pi pi-sign-out" style="color: white"></i>
-            <nuxt-link v-if="!isCollapsed" class="text-white nav-link" to="/#">
-              Logout
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link to="/categories">
+              <i class="pi pi-list pb-1 mr-2"></i>Categories
+            </nuxt-link>
+          </li>
+          <li class="flex justify-start items-align px-4 py-3">
+            <nuxt-link to="/author">
+              <i class="pi pi-prime pb-1 mr-2"></i>Authors
+            </nuxt-link>
+          </li>
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link to="/library">
+              <i class="pi pi-book pb-1 mr-2"></i>Library
+            </nuxt-link>
+          </li>
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link to="/borrowing_log">
+              <i class="pi pi-bookmark pb-1 mr-2"></i>Log Book
+            </nuxt-link>
+          </li>
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link to="/notifications">
+              <i class="pi pi-bell pb-1 mr-2"></i>Notifications
             </nuxt-link>
           </li>
         </ul>
+        !SECTION
+        // SECTION - logout and help
+        <ul>
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link to="/#">
+              <i class="pi pi-info-circle pb-1 mr-2"></i>Help and Info
+            </nuxt-link>
+          </li>
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link to="/#">
+              <i class="pi pi-sign-out pb-1 mr-2"></i>Logout
+            </nuxt-link>
+          </li>
+        </ul>
+        !SECTION
+      </div>
+      !SECTION
+    </div>
+  </ScrollPanel> -->
+  <ScrollPanel class="h-full" :class="[{ collapsed: isCollapsed }]">
+    <div class="navbar py-5 px-7 h-full rounded-lg bg-(--p-content-background)">
+      <!-- SECTION - flex column between two ul -->
+      <div class="h-full flex flex-col justify-between">
+        <!-- SECTION - menu -->
+        <ul>
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link exact v-if="!isCollapsed" to="/dashboard">
+              <i class="pi pi-home mr-2 pb-1"></i>Dashboard
+            </nuxt-link>
+          </li>
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link v-if="!isCollapsed" to="/categories">
+              <i class="pi pi-list pb-1 mr-2"></i>Categories
+            </nuxt-link>
+          </li>
+          <li class="flex justify-start items-align px-4 py-3">
+            <nuxt-link v-if="!isCollapsed" to="/author">
+              <i class="pi pi-prime pb-1 mr-2"></i>Authors
+            </nuxt-link>
+          </li>
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link v-if="!isCollapsed" to="/library">
+              <i class="pi pi-book pb-1 mr-2"></i>Library
+            </nuxt-link>
+          </li>
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link v-if="!isCollapsed" to="/borrowing_log">
+              <i class="pi pi-bookmark pb-1 mr-2"></i>Log Book
+            </nuxt-link>
+          </li>
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link v-if="!isCollapsed" to="/notifications">
+              <i class="pi pi-bell pb-1 mr-2"></i>Notifications
+            </nuxt-link>
+          </li>
+        </ul>
+        <!-- !SECTION -->
+        <!-- SECTION - logout and help -->
+        <ul>
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link v-if="!isCollapsed" to="/#">
+              <i class="pi pi-info-circle pb-1 mr-2"></i>Help and Info
+            </nuxt-link>
+          </li>
+          <li class="flex justify-start items-center px-4 py-3">
+            <nuxt-link v-if="!isCollapsed" to="/#">
+              <i class="pi pi-sign-out pb-1 mr-2"></i>Logout
+            </nuxt-link>
+          </li>
+        </ul>
+        <!-- !SECTION -->
       </div>
       <!-- !SECTION -->
     </div>
-  </div>
+  </ScrollPanel>
+  
 </template>
 
 <script setup>
 import { inject } from "vue";
-const isCollapsed = inject("isCollapsed");
+// const isCollapsed = inject("isCollapsed");
 const toggleSidebar = inject("toggleSidebar");
+const activeLinkStatus = ref(false);
 
 function handleResize() {
   if (window.innerWidth < 1300) {
@@ -97,73 +129,15 @@ function handleResize() {
 }
 
 onMounted(() => {
-  handleResize();
-  window.addEventListener("resize", handleResize);
+  /* handleResize();
+  window.addEventListener("resize", handleResize); */
 });
 </script>
 
-<style lang="scss" scoped>
-.container {
-  width: 100%;
-  min-width: 75px;
-
-  padding: 0 1rem;
-  height: 100%;
-  transition: width 0.5s ease;
-  backdrop-filter: blur(5.5px);
-  -webkit-backdrop-filter: blur(5.5px);
-  background: rgba(193, 193, 193, 0.386);
-  border-radius: 20px;
-  backdrop-filter: blur(5.5px);
-  -webkit-backdrop-filter: blur(5.5px);
-  .navbar {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    .logo {
-      transition: 1s;
-      cursor: pointer;
-      h3 {
-        opacity: 100%;
-        transition: 0.3s ease-in-out;
-      }
-    }
-    ul li {
-      width: 100%;
-      list-style: none;
-      margin: 2em 0;
-      padding: 0;
-      display: flex;
-      align-items: center;
-      padding-left: 1.5em;
-      .pi {
-        display: flex;
-        margin-right: 1em;
-        align-items: center;
-        font-size: 1.3em;
-      }
-      .nav-link {
-        opacity: 100%;
-        transition: 0.3s ease-in-out;
-        color: #fff;
-        text-decoration: none;
-      }
-      .router-link-active {
-        padding-bottom: 5px;
-        border-bottom-style: solid;
-      }
-    }
-  }
-}
-.container.collapsed {
-  padding: 0;
-  .navbar {
-    padding: 0;
-    justify-content: space-between;
-    align-items: center;
-    .divider {
-      width: 80%;
-    }
-  }
+<style scoped>
+.router-link-active {
+  color: var(--p-primary-color);
+  scale: 1.05;
+  transition: 0.4s;
 }
 </style>
