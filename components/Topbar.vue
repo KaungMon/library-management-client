@@ -1,55 +1,51 @@
 <template>
-  <div
-    class="topbar py-3 px-5 flex justify-content-end align-items-center"
-    :class="topbar"
-  >
-    <!-- SECTION - user indicator -->
-    <div
-      class="user-indi mx-3 h-3rem bg-white text-black flex justify-content-between align-items-center"
-    >
-      <h5 class="profile-name text-900 mx-3">Kaung Mon</h5>
-      <img
-        class="profile-img"
-        src="/public/img/simon-lee-dark-bule.jpg"
-        alt=""
-      />
-    </div>
-    <!-- !SECTION -->
-  </div>
+  <Toolbar class="p-dark">
+    <template #start>
+      <!-- SECTION - logo -->
+      <div class="flex flex-row items-center gap-3">
+        <div class="">
+          <img @click="toggleSidebar()" class="size-10" src="/public/icons/Logo (1).svg" alt="Logo" />
+        </div>
+        <h3 v-if="!isCollapsed" class="inline-block">
+          <span>Admin Dashboard</span>
+        </h3>
+      </div>
+      <!-- !SECTION -->
+    </template>
+
+    <template #end>
+      <div class="flex flex-row items-center gap-3">
+        <!-- SECTION - dark mode -->
+        <ToggleSwitch @click="toggleDarkMode()" />
+        <!-- !SECTION -->
+        <!-- SECTION - user indicator -->
+        <div class="flex flex-row items-center gap-3 bg-(--p-primary-color) px-3 py-2 rounded-full">
+          <h2>Kaung Mon</h2>
+          <img
+            class="size-[2.5em] object-cover object-center rounded-full"
+            src="/public/img/simon-lee-dark-bule.jpg"
+            alt=""
+          />
+        </div>
+        <!-- !SECTION -->
+      </div>
+    </template>
+  </Toolbar>
 </template>
 
-<script setup></script>
+<script setup>
+const isCollapsed = ref(false);
+const isDark = ref(false);
+const emit = defineEmits (['isDark']);
+const toggleDarkMode = function () {
+  document.documentElement.classList.toggle("p-dark");
+  isDark.value = !isDark.value;
+  emit('isDark' , isDark.value);
+};
 
-<style lang="scss" scoped>
-.topbar {
-  height: calc(100% - 89%);
-  transition: height 0.5s ease;
-  backdrop-filter: blur(5.5px);
-  -webkit-backdrop-filter: blur(5.5px);
-  background: rgba(193, 193, 193, 0.386);
-  border-radius: 20px;
-  backdrop-filter: blur(5.5px);
-  -webkit-backdrop-filter: blur(5.5px);
-
-  .search-bar:hover {
-    button {
-      text-shadow: 5px 5px 5px rgba(0, 0, 0, 0.419);
-      transform: scale(1.2);
-    }
-  }
-  .user-indi {
-    padding: 0 0.5rem;
-    border-radius: 50px;
-    cursor: pointer;
-    .profile-name {
-      cursor: pointer;
-    }
-    .profile-img {
-      width: 2.5em;
-      height: 2.5em;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-  }
+const toggleSidebar = () => {
+  isCollapsed.value = !isCollapsed.value;
+  console.log(isCollapsed.value);
 }
-</style>
+
+</script>

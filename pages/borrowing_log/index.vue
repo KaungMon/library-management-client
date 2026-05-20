@@ -1,11 +1,15 @@
 <template>
-  <Notifications/>
+  <div>
+    <BorrowingTable/>
+  </div>
 </template>
 
 <script setup>
 definePageMeta({
   layout: "custom",
-});
+})
 </script>
 
-<style></style>
+<style lang="scss" scoped>
+
+</style>

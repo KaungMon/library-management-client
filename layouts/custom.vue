@@ -1,14 +1,18 @@
 <template>
-  <div :class="['container', { collapsed: isCollapsed }]">
-    <div class="page h-full">
-      <div class="sidebar" @sidebar-toggled="handleSidebarToggle">
+  <div class="h-vh" :class="[{ 'bg-zinc-200': !isDark }]">
+    <div class="relative">
+      <div
+        class="w-full fixed top-0 left-0 z-3"
+      >
+        <Topbar @isDark="darkMode" />
+      </div>
+      <div
+        class="min-w-[22rem] overflow-auto z-2 fixed col-span-2 pl-8 py-8 h-[calc(100vh-5rem)]"
+      >
         <Navbar />
       </div>
-      <div class="main-panel">
-        <Topbar />
-        <div class="wapper mt-3">
-          <NuxtPage />
-        </div>
+      <div class="ml-0 md:ml-[22rem] overflow-auto z-1 mt-[5rem] p-8 h-[calc(100vh-5rem)]">
+        <NuxtPage class="h-full" />
       </div>
     </div>
     <div class="footer">
@@ -20,43 +24,16 @@
 <script setup>
 import { ref, provide } from "vue";
 const isCollapsed = ref(false);
+const isDark = ref(false);
 
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value;
 };
 provide("isCollapsed", isCollapsed);
 provide("toggleSidebar", toggleSidebar);
+
+const darkMode = (value) => {
+  isDark.value = value;
+  console.log(isDark.value);
+};
 </script>
-
-<style lang="scss" scoped>
-.container {
-  height: calc(100vh - 3em);
-  z-index: 1;
-  .page {
-    display: grid;
-    padding: 1em;
-    grid-template-columns: 15% 84%;
-    transition: 0.5s;
-    column-gap: 1%;
-    .sidebar {
-      z-index: 2;
-    }
-
-    .wapper {
-      height: calc(100% - 13%);
-      backdrop-filter: blur(5.5px);
-      padding: 2em 3.5em;
-      -webkit-backdrop-filter: blur(5.5px);
-      background: rgba(193, 193, 193, 0.386);
-      border-radius: 20px;
-      backdrop-filter: blur(5.5px);
-      -webkit-backdrop-filter: blur(5.5px);
-    }
-  }
-}
-.container.collapsed {
-  .page {
-    grid-template-columns: 5.2% 93.5%;
-  }
-}
-</style>

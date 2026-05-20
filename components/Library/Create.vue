@@ -2,31 +2,23 @@
   <div>
     <Button
       label="Add Book"
-      pt:root="bg-orange-400 border-orange-400 hover:bg-orange-600 border-orange-600 active:bg-orange-800 border-orange-800  "
       @click="visible = true"
       raised
     />
     <Dialog
       v-model:visible="visible"
       modal
-      class="bg-white-alpha-60 border-round-3xl"
       header="Create Book"
       @after-hide="[(errors = {}), (submitted = false)], clear()"
       :style="{ width: '50rem' }"
     >
-      <div class="grid my-4">
-        <label for="title" class="font-semibold col-3">Title</label>
-        <div class="col flex flex-column p-0">
+      <div class="my-4 grid grid-cols-2">
+        <label for="title" class="font-semibold self-center">Title</label>
+        <div class="p-0">
           <InputText
-            :pt="{
-              root: {
-                class: 'bg-white text-500 ',
-              },
-            }"
             id="title"
             v-model="title"
             placeholder="Enter A Book Title"
-            :invalid="!title && submitted"
             autocomplete="off"
           />
           <Message
@@ -38,10 +30,9 @@
         </div>
       </div>
 
-      <div class="grid mb-4">
-        <label for="image" class="font-semibold col-3 w-24">Image</label>
+      <div class="mb-4 grid grid-cols-2">
+        <label for="image" class="font-semibold self-center">Image</label>
         <FileUpload
-          class="col"
           mode="basic"
           ref="fileupload"
           name="image"
@@ -49,19 +40,15 @@
           :maxFileSize="10000000"
         />
       </div>
-      <div class="grid mb-4">
-        <label for="publisher" class="font-semibold col-3 w-24"
+      <div class="mb-4 grid grid-cols-2">
+        <label for="publisher" class="font-semibold  self-center"
           >Publisher</label
         >
-        <div class="col flex flex-column p-0">
+        <div class=" flex flex-column p-0">
           <InputText
-            :pt="{
-              root: { class: 'bg-white text-500 col' },
-            }"
             id="publisher"
             v-model="publisher"
             placeholder="Enter a Publisher Name"
-            :invalid="!publisher && submitted"
             autocomplete="off"
           />
           <Message
@@ -72,21 +59,13 @@
           >
         </div>
       </div>
-      <div class="grid mb-4">
-        <label for="published_year" class="col-3 font-semibold w-24"
+      <div class="mb-4 grid grid-cols-2">
+        <label for="published_year" class=" font-semibold self-center"
           >Published Year</label
         >
-        <div class="col flex flex-column p-0">
+        <div class=" flex flex-column p-0">
           <DatePicker
-            class="flex-auto col p-0"
-            :pt="{
-              panel: { class: 'bg-white' },
-              header: { class: 'bg-white text-900' },
-              year: { class: 'text-900' },
-              pcInputText: {
-                root: { class: 'bg-white text-900' },
-              },
-            }"
+            class="flex-auto  p-0"
             v-model="published_year"
             :invalid="!published_year && submitted"
             placeholder="Select Published Year"
@@ -101,55 +80,26 @@
           >
         </div>
       </div>
-      <div class="grid mb-4">
-        <label for="author_name" class="col-3 font-semibold w-24">Author</label>
-        <div class="col flex flex-column p-0">
+      <div class="mb-4 grid grid-cols-2">
+        <label for="author_name" class=" font-semibold self-center">Author</label>
+        <div class=" flex flex-column p-0">
           <Select
-            :pt="{
-              root: { class: 'bg-white' },
-              label: {
-                class: 'bg-white capitalize text-500 px-1',
-              },
-              overlay: { class: 'bg-white' },
-              option: {
-                class:
-                  'text-900 hover:bg-blue-700 hover:text-200 active:bg-blue-900',
-              },
-            }"
             v-model="selectedAuthor"
             :options="authors"
             :invalid="!selectedAuthor && submitted"
             optionLabel="author_name"
             placeholder="Select author"
-            class="flex-auto col"
+            class="flex-auto "
           />
           <Message severity="error" v-if="errors.author" variant="simple">{{
             errors.author
           }}</Message>
         </div>
       </div>
-      <div class="grid mb-4">
-        <label for="author_name" class="col-3 font-semibold w-24">Genres</label>
-        <div class="col flex flex-column p-0">
+      <div class="mb-4 grid grid-cols-2">
+        <label for="author_name" class=" font-semibold self-center">Genres</label>
+        <div class=" flex flex-column p-0">
           <MultiSelect
-            :pt="{
-              root: { class: 'bg-white' },
-              label: { class: 'bg-white capitalize text-800 px-1' },
-              overlay: { class: 'bg-white' },
-              option: {
-                class:
-                  'text-900 hover:bg-blue-700 hover:text-200 active:bg-blue-900',
-              },
-              pcHeaderCheckbox: {
-                box: { class: 'bg-white border-blue-500' },
-              },
-              pcFilter: {
-                root: { class: 'bg-white' },
-              },
-              pcOptionCheckbox: {
-                box: { class: 'bg-white' },
-              },
-            }"
             v-model="selectedGenres"
             :options="genres"
             :invalid="!selectedGenres && submitted"
@@ -157,7 +107,7 @@
             filter
             placeholder="Select Genres"
             :maxSelectedLabels="3"
-            class="flex-auto col bg-white text-900"
+            class="flex-auto  bg-white text-900"
           />
           <Message severity="error" v-if="errors.genres" variant="simple">{{
             errors.genres
@@ -165,7 +115,7 @@
         </div>
       </div>
 
-      <div class="flex justify-content-end gap-2 mb-5">
+      <div class="flex justify-end gap-2 mb-5">
         <Button
           type="button"
           label="Cancel"
@@ -212,7 +162,9 @@ const validationCheck = () => {
   errors.value = {};
 
   const fields = [
-    { name: "title", value: title.value, message: "Title field is required." },
+    { name: "title", 
+      value: title.value, 
+      message: "Title field is required." },
     {
       name: "publisher",
       value: publisher.value,
@@ -316,4 +268,10 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.p-inputtext {
+  width: 100%;
+}
+
+
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <AuthLogin/>
+    <AuthRegisterRegistration/>
   </div>
 </template>
 
@@ -10,6 +10,6 @@ definePageMeta({
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>

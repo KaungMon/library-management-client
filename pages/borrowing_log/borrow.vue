@@ -1,15 +1,15 @@
 <template>
   <div>
-    <AuthLogin/>
+    <BorrowingCreate/>
   </div>
 </template>
 
 <script setup>
 definePageMeta({
-  layout: "auth",
-});
+  layout : "custom",
+})
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>
