@@ -56,14 +56,6 @@
       <Button label="BACK" @click="back" />
       <Button label="NEXT" type="submit" />
     </div>
-    <div class="mt-5 flex items-center">
-      <p class="text-white text-lg">
-        You already have an account?
-        <nuxt-link class="text-orange-500 text-lg" to="/auth/login"
-          >Login here</nuxt-link
-        >
-      </p>
-    </div>
   </Form>
 </template>
 
@@ -80,6 +72,8 @@ const registeredData = useState("registeredData", () => ({
   phone: null,
   gender: "",
 }));
+
+const registrationStep = useState('reg_step')
 
 const initialValues = registeredData;
 
@@ -105,25 +99,19 @@ const genders = ref([
   { name: "Other", key: "O" },
 ]);
 
-const router = useRouter();
-
-const next = (e) => {
-  console.log(e);
-  
-  if(e.valid) {
+const next = async (e) => {
+  try {
     registeredData.value.address = e.values.address;
     registeredData.value.phone = e.values.phone;
     registeredData.value.gender = e.values.gender;
-    router.push("/auth/register/registration");
+    registrationStep.value = '3';
+    navigateTo("/auth/register/registration");
+  }catch (error) {
+    console.error("Wrong", error)
   }
 };
 
-onMounted(() => {
-  console.log(registeredData.value);
-  
-})
-
 const back = () => {
-  router.back();
+  navigateTo("/auth/register");
 };
 </script>

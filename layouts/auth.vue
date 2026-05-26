@@ -1,5 +1,5 @@
 <template>
-  <div class="h-screen relative bg-linear-to-tr from-blue-950 to-blue-600">
+  <div class="min-h-screen relative bg-linear-to-tr from-blue-950 to-blue-600">
     <div class="grid grid-cols-12 gap-5 h-full">
       <div class="col-span-6">
         <div class="pt-10 pl-10">
@@ -16,7 +16,7 @@
               </div>
             </div>
 
-            <div>
+            <div class="pb-[7rem]">
               <NuxtPage/>
             </div>
           </div>

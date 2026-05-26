@@ -56,12 +56,12 @@ import { ref } from "vue";
 import { valibotResolver } from "@primevue/forms/resolvers/valibot";
 import * as v from "valibot";
 
-const router = useRouter();
-
 const registeredData = useState("registeredData", () => ({
   firstName: "",
   surname: "",
 }));
+
+const registrationStep = useState('reg_step', () => '1');
 
 const initialValues = ref({
   firstName : registeredData.value.firstName,
@@ -83,11 +83,14 @@ const resolver = valibotResolver(
   }),
 );
 
-const next = (e) => {
-  if (e.valid) {
+const next = async (e) => {
+  try {
     registeredData.value.firstName = e.values.firstName;
     registeredData.value.surname = e.values.surname;
-    router.push("/auth/register/contactinfo");
+    registrationStep.value = '2';
+    navigateTo("/auth/register/contactinfo")
+  }catch (error) {
+    console.error("Wrong", error)
   }
 };
 </script>

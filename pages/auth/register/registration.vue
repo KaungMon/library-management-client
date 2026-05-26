@@ -7,6 +7,7 @@
 <script setup>
 definePageMeta({
   layout: "auth",
+  middleware: ["registration"]
 });
 </script>
 

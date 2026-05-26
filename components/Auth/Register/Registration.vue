@@ -64,14 +64,6 @@
       <Button label="BACK" @click="back" />
       <Button type="submit" label="SIGN UP" />
     </div>
-    <div class="mt-5 flex items-center">
-      <p class="text-white text-lg">
-        You already have an account?
-        <nuxt-link class="text-orange-500 text-lg" to="/auth/register"
-          >Login here</nuxt-link
-        >
-      </p>
-    </div>
   </Form>
 </template>
 
@@ -81,9 +73,11 @@ import { FormField } from "@primevue/forms";
 import { valibotResolver } from "@primevue/forms/resolvers/valibot";
 import { ref } from "vue";
 import * as v from "valibot";
+import axios from "axios";
+
+const config = useRuntimeConfig();
 
 const registeredData = useState("registeredData");
-const router = useRouter();
 
 const initialValues = ref({
   username: "",
@@ -122,15 +116,49 @@ const resolver = valibotResolver(
   )
 );
 
-const signup = () => {
-  console.log(registeredData.value);
+const getData = (data) => {
+  return {
+      firstName : data.value.firstName,
+      surname : data.value.surname,
+      address : data.value.address,
+      gender : data.value.gender,
+      phone : data.value.phone,
+      email : data.value.email,
+      username : data.value.username,
+      password : data.value.password
+  }
+}
+
+const signup = async (e) => {
+  try {
+    registeredData.value.username = e.values.username;
+    registeredData.value.email = e.values.email;
+    registeredData.value.password = e.values.password;
+
+    const toSentData = getData(registeredData);
+    
+    const response = await axios.post(`${config.public.apiBaseUrl}/user/signup`, toSentData)
+
+    const token = response.data.token;
+    
+    if (token) {
+      const tokenCookie = useCookie('auth_token', {
+        maxAge : 60 * 60 * 27 * 7,
+        sameSite : 'lax',
+        secure : true
+      })
+
+      tokenCookie.value = token
+
+      await navigateTo('/dashboard');
+    }
+    
+  }catch(error) {
+    console.error("Wrong", error)
+  }
 };
 
-onMounted(() => {
-  console.log(registeredData.value);
-});
-
 const back = () => {
-  router.back();
+  navigateTo("/auth/register/contactinfo");
 };
 </script>

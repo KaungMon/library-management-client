@@ -45,12 +45,12 @@
       />
       <FormField class="flex items-center">
         <Checkbox
-          v-model="pizza"
-          inputId="ingredient1"
-          name="pizza"
-          value="Cheese"
+          v-model="remember_me"
+          inputId="remember_me"
+          name="remember_me"
+          value="True"
         />
-        <label for="ingredient1" class="ml-2 text-white"> Remember Me </label>
+        <label for="remember_me" class="ml-2 text-white"> Remember Me </label>
       </FormField>
     </div>
     <div class="mt-5 flex items-center">
@@ -77,8 +77,29 @@ const initialValues = ref({
   password: "",
 });
 
-const login = (e) => {
-  console.log(e.values);
-  
+const login = async (e) => {
+  try {
+    const response = await axios.post(`${config.public.apiBaseUrl}/user/login`, {
+      email: e.values.email,
+      password: e.values.password
+    });
+
+    const token = response.data.token;
+
+    if (token) {
+      // NOTE - Store the token in a cookie so it survives page refreshes
+      const tokenCookie = useCookie('auth_token', {
+        maxAge: 60 * 60 * 24 * 7, // Expires in 7 days
+        sameSite: 'lax',
+        secure: true
+      });
+      tokenCookie.value = token;
+
+      // NOTE - Redirect your user to the secured area
+      await navigateTo('/dashboard');
+    }
+  } catch (error) {
+    console.error('Login failed:', error);
+  }
 };
 </script>
