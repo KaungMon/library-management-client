@@ -46,12 +46,13 @@
 import { ref } from "vue";
 import axios from "axios";
 
+const config = useRuntimeConfig();
 const visible = ref(false);
 
 const authorName = ref("");
 const create = () => {
   axios
-    .post("http://127.0.0.1:8000/api/author/create", {
+    .post(`${config.public.apiBaseUrl}/author/create`, {
       authorName: authorName.value,
     })
     .then((response) => {

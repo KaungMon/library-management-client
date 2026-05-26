@@ -24,28 +24,38 @@
             </div>
 
             <div class="col-12">
+              <!-- SECTION - username -->
               <div class="mt-2">
                 <FloatLabel>
                   <InputText
-                    class="bg-white w-11 text-700"
+                    :pt="{
+                      root: { class: 'bg-white text-900 w-11' },
+                    }"
                     id="username"
-                    v-model="value"
+                    v-model="username"
                   />
                   <label for="username">Username</label>
                 </FloatLabel>
               </div>
-              <!-- NOTE - Component nal thone yin background color ka black phyit nay tar yal width yaw bg-color yaw pyoung ma ya loz -->
+              <!-- !SECTION -->
+              <!-- SECTION - password -->
               <div class="mt-5">
                 <FloatLabel>
-                  <input
-                    type="password"
-                    style="height: 2.8rem"
-                    class="w-11 border-round"
+                  <Password
+                    :pt="{
+                      pcInputText: {
+                        root: { class: 'bg-white text-900 w-11' },
+                      },
+                    }"
+                    v-model="password"
+                    name="password"
+                    :feedback="false"
+                    fluid
                   />
                   <label for="password">Password</label>
                 </FloatLabel>
               </div>
-              <!-- !NOTE -->
+              <!-- !SECTION -->
               <div class="mt-5 flex justify-content-between">
                 <Button
                   class="bg-orange-500 border-none px-4"

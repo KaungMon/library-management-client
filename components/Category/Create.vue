@@ -48,12 +48,13 @@
 import { ref } from "vue";
 import axios from "axios";
 
+const config = useRuntimeConfig();
 const visible = ref(false);
 
 const categoryName = ref("");
 const create = () => {
   axios
-    .post("http://127.0.0.1:8000/api/category/create", {
+    .post(`${config.public.apiBaseUrl}/category/create`, {
       categoryName: categoryName.value,
     })
     .then((response) => {
