@@ -1,21 +1,16 @@
 <template>
   <div>
-    <div class="header flex justify-content-between align-items-center">
+    <div class="header flex justify-between items-center">
       <h1 class="font-italic">Manage Library{{ receivedData }}</h1>
 
-      <div class="flex justify-content-center align-items-centers gap-4">
+      <div class="flex justify-center items-centers gap-4">
         <SearchBar @keySent="handleSearchKey" />
         <LibraryCreate />
       </div>
     </div>
-    <div class="card">
+    <div class="card pt-4">
       <!-- SECTION - Table -->
       <DataTable
-        :pt="{
-          root: { class: 'bg-white-alpha-70 border-round-top-lg px-3 pt-2' },
-          bodyRow: { class: 'bg-transparent text-900' },
-          headerCell: { class: 'bg-white' },
-        }"
         v-model:editingRows="editingRows"
         :value="books"
         editMode="row"
@@ -25,9 +20,6 @@
         <!-- SECTION - Image -->
         <Column
           header="Image"
-          :pt="{
-            headerCell: { class: 'bg-transparent text-900' },
-          }"
         >
           <template #body="{ data }">
             <img
@@ -47,9 +39,6 @@
         <!-- !SECTION -->
         <!-- SECTION - Title -->
         <Column
-          :pt="{
-            headerCell: { class: 'bg-transparent text-900' },
-          }"
           field="title"
           class="capitalize"
           header="Title"
@@ -58,9 +47,6 @@
         <!-- !SECTION -->
         <!-- SECTION - Publisher -->
         <Column
-          :pt="{
-            headerCell: { class: 'bg-transparent text-900' },
-          }"
           field="publisher"
           header="Publisher"
           class="capitalize"
@@ -69,9 +55,6 @@
         <!-- !SECTION -->
         <!-- SECTION - Published Year -->
         <Column
-          :pt="{
-            headerCell: { class: 'bg-transparent text-900' },
-          }"
           field="published_year"
           class="capitalize"
           header="Published Year"
@@ -80,9 +63,6 @@
         <!-- !SECTION -->
         <!-- SECTION - Author Name -->
         <Column
-          :pt="{
-            headerCell: { class: 'bg-transparent text-900' },
-          }"
           field="author.author_name"
           class="capitalize"
           header="Author"
@@ -91,9 +71,6 @@
         <!-- !SECTION -->
         <!-- SECTION - Categories -->
         <Column
-          :pt="{
-            headerCell: { class: 'bg-transparent text-900' },
-          }"
           field="categories"
           class="capitalize"
           header="Categories"
@@ -101,9 +78,6 @@
         </Column>
         <!-- !SECTION -->
         <Column
-          :pt="{
-            headerCell: { class: 'bg-transparent' },
-          }"
           style="width: 10%; min-width: 8rem"
         >
           <template #body="{ data }">
@@ -128,24 +102,6 @@
       <!-- !SECTION -->
       <!-- SECTION - Paginator -->
       <Paginator
-        :pt="{
-          root: { class: 'bg-white-alpha-70 border-round-bottom-lg' },
-          content: { class: 'bg-white-alpha-40' },
-          first: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
-          prev: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
-          next: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
-          last: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
-          page: { class: 'text-900 hover:bg-blue-800 hover:text-0' },
-          pcRowPerPageDropdown: {
-            root: { class: 'bg-transparent' },
-            label: { class: 'text-900' },
-            overlay: { class: 'bg-white-alpha-50' },
-            option: {
-              class:
-                'text-900 hover:bg-blue-800 hover:text-0 select:bg-blue-500',
-            },
-          },
-        }"
         :rows="rowsPerPage"
         @page="onPageChange"
         :totalRecords="totalRecords"

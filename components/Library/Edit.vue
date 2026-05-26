@@ -1,15 +1,6 @@
 <template>
   <div>
-    <Card
-      :pt="{
-        root: { class: 'bg-white-alpha-50 rounded' },
-        header: {
-          class:
-            'mt-3 ml-3 text-xl text-900 cursor-pointer mb-4  hover:underline',
-        },
-        content: { class: 'mb-4' },
-      }"
-    >
+    <Card>
       <!-- SECTION - back button -->
       <template #header>
         <span @click="back"> <i class="pi pi-chevron-left"></i> Back </span>
@@ -17,29 +8,23 @@
       <!-- !SECTION -->
       <template #content>
         <!-- SECTION - form -->
-        <Form @submit="onFormSubmit" class="grid">
+        <Form @submit="onFormSubmit" class="grid grid-cols-3 gap-4">
           <div
-            class="col-4 flex flex-column justify-content-center align-items-center"
+            class="col-span-2 flex flex-col justify-center items-center gap-3"
           >
             <img
               v-if="book.image != null"
               :src="`${config.public.baseUrl}/storage/image/${book.image}`"
-              class="w-8 border-2"
+              class="w-64 border-4"
               alt=""
             />
             <img
               v-else
               src="/public/img/images.png"
-              class="w-8 border-2"
+              class="w-64 border-4"
               alt=""
             />
             <FileUpload
-              :pt="{
-                root: { class: 'mt-3' },
-                pcChooseButton: {
-                  root: { class: 'bg-orange-500' },
-                },
-              }"
               ref="image"
               mode="basic"
               name="image"
@@ -48,18 +33,13 @@
             />
           </div>
           <div
-            class="col-8 flex flex-column justify-content-between align-items-start"
+            class="col-span-1 flex flex-col justify-between items-start"
           >
-            <div class="grid">
+            <div class="">
               <!-- SECTION - Title -->
-              <div class="col-6 flex flex-column">
+              <div class="flex flex-col mb-3">
                 <label for="title">Title</label>
                 <InputText
-                  :pt="{
-                    root: {
-                      class: 'bg-white text-900',
-                    },
-                  }"
                   id="title"
                   placeholder="Enter A Title"
                   v-model="book.title"
@@ -68,14 +48,9 @@
               </div>
               <!-- !SECTION -->
               <!-- SECTION - Publisher -->
-              <div class="col-6 flex flex-column">
+              <div class="flex flex-col mb-3">
                 <label for="publisher">Publisher</label>
                 <InputText
-                  :pt="{
-                    root: {
-                      class: 'bg-white text-900',
-                    },
-                  }"
                   id="publisher"
                   placeholder="Enter A Publisher Name"
                   v-model="book.publisher"
@@ -84,17 +59,9 @@
               </div>
               <!-- !SECTION -->
               <!-- SECTION - Published Year -->
-              <div class="col-6 flex flex-column">
+              <div class="flex flex-col mb-3">
                 <label for="published_year">Published Year</label>
                 <DatePicker
-                  :pt="{
-                    panel: { class: 'bg-white' },
-                    header: { class: 'bg-white text-900' },
-                    year: { class: 'text-900' },
-                    pcInputText: {
-                      root: { class: 'bg-white text-900' },
-                    },
-                  }"
                   v-model="book.published_year"
                   placeholder="Select Published Year"
                   view="year"
@@ -104,20 +71,9 @@
               </div>
               <!-- !SECTION -->
               <!-- SECTION - Author -->
-              <div class="col-6 flex flex-column">
+              <div class="flex flex-col mb-3">
                 <label for="author_name">Author Name</label>
                 <Select
-                  :pt="{
-                    root: { class: 'bg-white' },
-                    label: {
-                      class: 'bg-white capitalize text-500 px-1',
-                    },
-                    overlay: { class: 'bg-white' },
-                    option: {
-                      class:
-                        'text-900 hover:bg-blue-700 hover:text-200 active:bg-blue-900',
-                    },
-                  }"
                   id="author_name"
                   v-model="book.author"
                   :options="authors"
@@ -127,27 +83,9 @@
               </div>
               <!-- !SECTION -->
               <!-- SECTION - Genres -->
-              <div class="col-6 flex flex-column">
+              <div class="flex flex-col mb-3">
                 <label for="genres">Genres Name</label>
                 <MultiSelect
-                  :pt="{
-                    root: { class: 'bg-white' },
-                    label: { class: 'bg-white capitalize text-800 px-1' },
-                    overlay: { class: 'bg-white' },
-                    option: {
-                      class:
-                        'text-900 hover:bg-blue-700 hover:text-200 active:bg-blue-900',
-                    },
-                    pcHeaderCheckbox: {
-                      box: { class: 'bg-white border-blue-500' },
-                    },
-                    pcFilter: {
-                      root: { class: 'bg-white' },
-                    },
-                    pcOptionCheckbox: {
-                      box: { class: 'bg-white' },
-                    },
-                  }"
                   v-model="book.categories"
                   :options="genres"
                   optionLabel="name"
@@ -159,7 +97,7 @@
               <!-- !SECTION -->
             </div>
             <div
-              class="flex justify-content-end align-content-end align-self-end"
+              class="flex justify-end content-end self-end"
             >
               <Button @click="add" severity="contract" label="UPDATE"></Button>
             </div>
@@ -268,4 +206,8 @@ onMounted(() => {
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.p-card {
+  padding: 20px;
+}
+</style>

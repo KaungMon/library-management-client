@@ -1,15 +1,16 @@
 <template>
   <div>
-    <AuthLogin/>
+    <AuthRegisterRegistration/>
   </div>
 </template>
 
 <script setup>
 definePageMeta({
   layout: "auth",
+  middleware: ["registration"]
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>
