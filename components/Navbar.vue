@@ -100,10 +100,11 @@
               <i class="pi pi-info-circle pb-1 mr-2"></i>Help and Info
             </nuxt-link>
           </li>
-          <li class="flex justify-start items-center px-4 py-3">
-            <nuxt-link v-if="!isCollapsed" to="/#">
-              <i class="pi pi-sign-out pb-1 mr-2"></i>Logout
-            </nuxt-link>
+          <li class="px-1">
+            <ConfirmDialog></ConfirmDialog>
+            <Button @click="logout" variant="text" severity="danger" v-if="!isCollapsed">
+              <i class="pi pi-sign-out mr-2"></i>Logout
+            </Button>
           </li>
         </ul>
         <!-- !SECTION -->
@@ -114,12 +115,54 @@
 </template>
 
 <script setup>
+import { includes, message } from "valibot";
 import { inject } from "vue";
+import { useConfirm } from "primevue";
+import { outlined } from "@primeuix/themes/aura/message";
+import axios from "axios";
+
 // const isCollapsed = inject("isCollapsed");
 const toggleSidebar = inject("toggleSidebar");
 const activeLinkStatus = ref(false);
+const confirm = useConfirm();
+const config = useRuntimeConfig();
 
-function handleResize() {
+const logout = () => {
+  confirm.require({
+    message : "Are you sure you want to log out?",
+    header : "Confirmation",
+    icon : "pi pi-exclamation-triangle",
+    rejectProps : {
+      label : "Cancle",
+      severity : "secondary",
+      outlined : true
+    },
+    acceptProps : {
+      label : "Logout",
+      severity : "danger"
+    },
+    accept : () => {
+      logoutApi();
+    }
+  })
+}
+
+const logoutApi = async () => {
+  try {
+    const response = await axios.post(`${config.public.apiBaseUrl}/user/logout`,{}, {
+      withCredentials : true,
+      xsrfCookieName : 'XSRF-TOKEN',
+      xsrfHeaderName : 'X-XSRF-TOKEN'
+    });
+    console.log(response);
+    
+  }catch (error) {
+    console.log(error);
+    
+  }
+}
+
+/* function handleResize() {
   if (window.innerWidth < 1300) {
     isCollapsed.value = true;
   } else {
@@ -128,9 +171,9 @@ function handleResize() {
 }
 
 onMounted(() => {
-  /* handleResize();
-  window.addEventListener("resize", handleResize); */
-});
+  handleResize();
+  window.addEventListener("resize", handleResize);
+}); */
 </script>
 
 <style scoped>
