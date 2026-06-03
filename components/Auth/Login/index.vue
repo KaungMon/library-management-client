@@ -16,12 +16,9 @@
         <InputText id="email" autocomplete="off" fluid />
         <label for="email">Email Address</label>
       </FloatLabel>
-      <Message
-        v-if="$form?.invalid"
-        severity="error"
-        size="small"
-        >{{ $form.error.message }}</Message
-      >
+      <Message v-if="$form?.invalid" severity="error" size="small">{{
+        $form.error.message
+      }}</Message>
     </FormField>
 
     <FormField v-slot="$form" name="password" class="mt-5">
@@ -29,20 +26,14 @@
         <Password inputId="password" variant="filled" fluid />
         <label for="password">Password</label>
       </FloatLabel>
-      <Message
-        v-if="$form?.invalid"
-        severity="error"
-        size="small"
-        >{{ $form.error.message }}</Message
-      >
+      <Message v-if="$form?.invalid" severity="error" size="small">{{
+        $form.error.message
+      }}</Message>
     </FormField>
 
     <!-- !NOTE -->
     <div class="mt-5 flex justify-between">
-      <Button
-        label="Login"
-        type="submit"
-      />
+      <Button label="Login" type="submit" />
       <FormField class="flex items-center">
         <Checkbox
           v-model="remember_me"
@@ -76,30 +67,29 @@ const initialValues = ref({
   email: "",
   password: "",
 });
+const api = axios.create({
+  withCredentials: true,
+  withXSRFToken : true,
+  xsrfCookieName: "XSRF-TOKEN",
+  xsrfHeaderName: "X-XSRF-TOKEN",
+  headers: {
+    Accept: "application/json",
+  },
+});
 
 const login = async (e) => {
   try {
-    const response = await axios.post(`${config.public.apiBaseUrl}/user/login`, {
+    await api.get(`${config.public.baseUrl}/sanctum/csrf-cookie`);
+    
+
+    const response = await api.post(`${config.public.apiBaseUrl}/user/login`, {
       email: e.values.email,
-      password: e.values.password
+      password: e.values.password,
     });
-
-    const token = response.data.token;
-
-    if (token) {
-      // NOTE - Store the token in a cookie so it survives page refreshes
-      const tokenCookie = useCookie('auth_token', {
-        maxAge: 60 * 60 * 24 * 7, // Expires in 7 days
-        sameSite: 'lax',
-        secure: true
-      });
-      tokenCookie.value = token;
-
-      // NOTE - Redirect your user to the secured area
-      await navigateTo('/dashboard');
-    }
+    navigateTo('/dashboard');
+    
   } catch (error) {
-    console.error('Login failed:', error);
+    console.error("Login failed:", error);
   }
 };
 </script>
