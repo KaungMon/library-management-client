@@ -1,6 +1,6 @@
 <template>
   <div class="card flex flex-col items-center gap-4">
-    <div v-ripple class="ripple-box">Default</div>
+    <Button @click="userInfo" v-ripple class="ripple-box">Default</Button>
   </div>
 </template>
 

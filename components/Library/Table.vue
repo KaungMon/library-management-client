@@ -117,8 +117,8 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import { getCategoryLists } from "~/composable/getCategoryLists";
-import { getAuthorLists } from "~/composable/getAuthorLists";
+import { getCategoryLists } from "~/composables/getCategoryLists";
+import { getAuthorLists } from "~/composables/getAuthorLists";
 const config = useRuntimeConfig();
 const books = ref();
 const currentPage = ref(1);

@@ -140,8 +140,8 @@ import axios from "axios";
 import Select from "primevue/select";
 
 import { ref, onMounted } from "vue";
-import { getAuthorLists } from "~/composable/getAuthorLists";
-import { getCategoryLists } from "~/composable/getCategoryLists";
+import { getAuthorLists } from "~/composables/getAuthorLists";
+import { getCategoryLists } from "~/composables/getCategoryLists";
 
 const { fetchCategories } = getCategoryLists();
 const { fetchAuthors } = getAuthorLists();
