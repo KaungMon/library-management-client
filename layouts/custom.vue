@@ -12,7 +12,7 @@
         <Navbar />
       </div>
       <div class="ml-0 md:ml-[22rem] overflow-auto z-1 mt-[5rem] p-8 h-[calc(100vh-5rem)]">
-        <NuxtPage class="h-full" />
+        <slot />
       </div>
     </div>
     <div class="footer">
@@ -36,4 +36,8 @@ const darkMode = (value) => {
   isDark.value = value;
   console.log(isDark.value);
 };
+
+onMounted(() => {
+  console.log("CUSTOM LAYOUT MOUNTED");
+});
 </script>

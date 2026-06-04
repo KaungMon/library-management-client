@@ -1,5 +1,6 @@
-export default defineNuxtRouteMiddleware(async (to, from) => {
-  const user = useState("user");
+export default defineNuxtRouteMiddleware((to) => {
+  const user = useCookie('user')
+
   const authPages = [
     "/auth/login",
     "/auth/register",

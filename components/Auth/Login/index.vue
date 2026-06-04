@@ -130,7 +130,7 @@ const login = async (e) => {
       password: e.values.password,
     });
 
-    const user = useState("user");
+    const user = useCookie("user", { maxAge: 60 * 60 * 24 * 7 });
     user.value = response.data.user;
 
     await navigateTo("/dashboard");

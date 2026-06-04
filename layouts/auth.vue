@@ -17,7 +17,7 @@
             </div>
 
             <div class="pb-[7rem]">
-              <NuxtPage/>
+              <slot />
             </div>
           </div>
         </div>
