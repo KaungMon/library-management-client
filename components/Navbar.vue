@@ -127,6 +127,14 @@ const activeLinkStatus = ref(false);
 const confirm = useConfirm();
 const config = useRuntimeConfig();
 
+const api = axios.create({
+  withCredentials: true,
+  withXSRFToken: true,
+  headers: {
+    Accept: "application/json",
+  },
+});
+
 const logout = () => {
   confirm.require({
     message : "Are you sure you want to log out?",
@@ -149,16 +157,15 @@ const logout = () => {
 
 const logoutApi = async () => {
   try {
-    const response = await axios.post(`${config.public.apiBaseUrl}/user/logout`,{}, {
-      withCredentials : true,
-      xsrfCookieName : 'XSRF-TOKEN',
-      xsrfHeaderName : 'X-XSRF-TOKEN'
-    });
-    console.log(response);
+    await api.post(`${config.public.apiBaseUrl}/user/logout`);
     
-  }catch (error) {
-    console.log(error);
+    const user = useState("user");
+    user.value = null;
     
+    await navigateTo('/auth/login');
+    
+  } catch (error) {
+    console.error("Logout failed:", error);
   }
 }
 
