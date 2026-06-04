@@ -159,7 +159,7 @@ const logoutApi = async () => {
   try {
     await api.post(`${config.public.apiBaseUrl}/user/logout`);
     
-    const user = useState("user");
+    const user = useCookie("user");
     user.value = null;
     
     await navigateTo('/auth/login');
