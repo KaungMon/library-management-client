@@ -1,9 +1,7 @@
 <template>
   <div class="h-vh" :class="[{ 'bg-zinc-200': !isDark }]">
     <div class="relative">
-      <div
-        class="w-full fixed top-0 left-0 z-3"
-      >
+      <div class="w-full fixed top-0 left-0 z-3">
         <Topbar @isDark="darkMode" />
       </div>
       <div
@@ -11,8 +9,10 @@
       >
         <Navbar />
       </div>
-      <div class="ml-0 md:ml-[22rem] overflow-auto z-1 mt-[5rem] p-8 h-[calc(100vh-5rem)]">
-        <NuxtPage class="h-full" />
+      <div
+        class="ml-0 md:ml-[22rem] overflow-auto z-1 mt-[5rem] p-8 h-[calc(100vh-5rem)]"
+      >
+        <slot />
       </div>
     </div>
     <div class="footer">

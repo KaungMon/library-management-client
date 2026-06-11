@@ -112,8 +112,8 @@
 <script setup>
 import axios from "axios";
 import { ref, onMounted } from "vue";
-import { getAuthorLists } from "~/composable/getAuthorLists";
-import { getCategoryLists } from "~/composable/getCategoryLists";
+import { getAuthorLists } from "~/composables/getAuthorLists";
+import { getCategoryLists } from "~/composables/getCategoryLists";
 
 const route = useRoute();
 const config = useRuntimeConfig();

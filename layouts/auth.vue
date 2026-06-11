@@ -17,13 +17,13 @@
             </div>
 
             <div class="pb-[7rem]">
-              <NuxtPage/>
+              <slot />
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col-span-6 p-3 flex justify-content-center">
+      <div class="col-span-6 p-3 flex justify-center">
         <img
           class="border-round"
           style="width: 100%; object-fit: cover"

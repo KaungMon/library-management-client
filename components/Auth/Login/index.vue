@@ -1,6 +1,7 @@
 <template>
   <Form
     :initialValues="initialValues"
+    :resolver="resolver"
     @submit="login"
     class="flex flex-col gap-4 w-full"
   >
@@ -10,49 +11,56 @@
         fill the form below to login your account.
       </p>
     </div>
-    <!-- NOTE - Component nal thone yin background color ka black phyit nay tar yal width yaw bg-color yaw pyoung ma ya loz -->
+
+    <Message severity="error" size="small" v-if="loginError">{{
+      loginError
+    }}</Message>
+
+    <!-- SECTION - email field -->
     <FormField v-slot="$form" name="email" class="mt-5">
       <FloatLabel variant="in">
-        <InputText id="email" autocomplete="off" fluid />
+        <InputText
+          id="email"
+          :invalid="$form?.invalid || !!loginError"
+          autocomplete="off"
+          fluid
+        />
         <label for="email">Email Address</label>
       </FloatLabel>
-      <Message
-        v-if="$form?.invalid"
-        severity="error"
-        size="small"
-        >{{ $form.error.message }}</Message
-      >
+      <Message v-if="$form?.invalid" severity="error" size="small">{{
+        $form.error.message
+      }}</Message>
     </FormField>
+    <!-- !SECTION -->
 
+    <!-- SECTION - password field -->
     <FormField v-slot="$form" name="password" class="mt-5">
       <FloatLabel variant="in">
-        <Password inputId="password" variant="filled" fluid />
+        <Password
+          inputId="password"
+          :invalid="$form?.invalid || !!loginError"
+          variant="filled"
+          fluid
+          toggleMask
+        />
         <label for="password">Password</label>
       </FloatLabel>
-      <Message
-        v-if="$form?.invalid"
-        severity="error"
-        size="small"
-        >{{ $form.error.message }}</Message
-      >
+      <Message v-if="$form?.invalid" severity="error" size="small">{{
+        $form.error.message
+      }}</Message>
     </FormField>
+    <!-- !SECTION -->
 
-    <!-- !NOTE -->
+    <!-- SECTION - button field -->
     <div class="mt-5 flex justify-between">
-      <Button
-        label="Login"
-        type="submit"
-      />
+      <Button label="Login" type="submit" />
       <FormField class="flex items-center">
-        <Checkbox
-          v-model="remember_me"
-          inputId="remember_me"
-          name="remember_me"
-          value="True"
-        />
+        <Checkbox v-model="remember_me" inputId="remember_me" binary />
         <label for="remember_me" class="ml-2 text-white"> Remember Me </label>
       </FormField>
     </div>
+    <!-- !SECTION -->
+
     <div class="mt-5 flex items-center">
       <p class="text-white text-lg">
         You don't have an account?
@@ -65,41 +73,48 @@
 </template>
 
 <script setup>
-import axios from "axios";
 import { Form } from "@primevue/forms";
 import { FormField } from "@primevue/forms";
 import { ref } from "vue";
 import { Message } from "primevue";
+import { valibotResolver } from "@primevue/forms/resolvers/valibot";
+import * as v from "valibot";
 
-const config = useRuntimeConfig();
+const {fetchUser, loginApi, user} = useAuth();
+const remember_me = ref(false);
+const loginError = ref("");
 const initialValues = ref({
   email: "",
   password: "",
 });
 
+const resolver = valibotResolver(
+  v.object({
+    email: v.pipe(
+      v.string(),
+      v.trim(),
+      v.email("You can't leave empty!!!"),
+      v.endsWith("@gmail.com"),
+    ),
+    password: v.pipe(
+      v.string(),
+      v.trim(),
+      v.minLength(8, "Your password have to be longer 8 letter."),
+    ),
+  }),
+);
+
 const login = async (e) => {
-  try {
-    const response = await axios.post(`${config.public.apiBaseUrl}/user/login`, {
-      email: e.values.email,
-      password: e.values.password
-    });
+  const email = e.values.email;
+  const password = e.values.password;
+  console.log({
+    email: email,
+    password: password,
+    remember_me: remember_me.value,
+  });
+  const message = await loginApi(email, password, remember_me.value);
+  await navigateTo("/dashboard");
 
-    const token = response.data.token;
-
-    if (token) {
-      // NOTE - Store the token in a cookie so it survives page refreshes
-      const tokenCookie = useCookie('auth_token', {
-        maxAge: 60 * 60 * 24 * 7, // Expires in 7 days
-        sameSite: 'lax',
-        secure: true
-      });
-      tokenCookie.value = token;
-
-      // NOTE - Redirect your user to the secured area
-      await navigateTo('/dashboard');
-    }
-  } catch (error) {
-    console.error('Login failed:', error);
-  }
+  loginError.value = message;
 };
 </script>
