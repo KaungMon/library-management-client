@@ -125,15 +125,7 @@ import axios from "axios";
 const toggleSidebar = inject("toggleSidebar");
 const activeLinkStatus = ref(false);
 const confirm = useConfirm();
-const config = useRuntimeConfig();
-
-const api = axios.create({
-  withCredentials: true,
-  withXSRFToken: true,
-  headers: {
-    Accept: "application/json",
-  },
-});
+const { userId, logoutApi } = useAuth();
 
 const logout = () => {
   confirm.require({
@@ -149,26 +141,19 @@ const logout = () => {
       label : "Logout",
       severity : "danger"
     },
-    accept : () => {
-      logoutApi();
+    accept : async () => {
+      const message = await logoutApi();
+      
+      if(message === "Logout successful") {
+        userId.value = null;
+        await navigateTo('/auth/login')
+      }else {
+        console.log(message);
+        
+      }
     }
   })
 }
-
-const logoutApi = async () => {
-  try {
-    await api.post(`${config.public.apiBaseUrl}/user/logout`);
-    
-    const user = useCookie("user");
-    user.value = null;
-    
-    await navigateTo('/auth/login');
-    
-  } catch (error) {
-    console.error("Logout failed:", error);
-  }
-}
-
 /* function handleResize() {
   if (window.innerWidth < 1300) {
     isCollapsed.value = true;

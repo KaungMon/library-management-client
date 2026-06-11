@@ -35,8 +35,25 @@ export const useAuth = () => {
     }
   };
 
+  const logoutApi = async () => {
+    const api = axios.create({
+      withCredentials: true,
+      withXSRFToken: true,
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
+    const resp = await api.post(`${apiBase}/auth/user/logout`, {
+      user_id : userId.value,
+    });
+
+    return resp.data.message;
+  }
+
   return {
     userId,
     loginApi,
+    logoutApi
   };
 };
