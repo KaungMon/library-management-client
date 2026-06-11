@@ -55,12 +55,7 @@
     <div class="mt-5 flex justify-between">
       <Button label="Login" type="submit" />
       <FormField class="flex items-center">
-        <Checkbox
-          v-model="remember_me"
-          inputId="remember_me"
-          name="remember_me"
-          value="True"
-        />
+        <Checkbox v-model="remember_me" inputId="remember_me" binary />
         <label for="remember_me" class="ml-2 text-white"> Remember Me </label>
       </FormField>
     </div>
@@ -78,7 +73,6 @@
 </template>
 
 <script setup>
-import axios from "axios";
 import { Form } from "@primevue/forms";
 import { FormField } from "@primevue/forms";
 import { ref } from "vue";
@@ -86,12 +80,13 @@ import { Message } from "primevue";
 import { valibotResolver } from "@primevue/forms/resolvers/valibot";
 import * as v from "valibot";
 
-const config = useRuntimeConfig();
+const {fetchUser, loginApi, user} = useAuth();
+const remember_me = ref(false);
+const loginError = ref("");
 const initialValues = ref({
   email: "",
   password: "",
 });
-const loginError = ref("");
 
 const resolver = valibotResolver(
   v.object({
@@ -109,33 +104,17 @@ const resolver = valibotResolver(
   }),
 );
 
-const api = axios.create({
-  withCredentials: true,
-  withXSRFToken: true,
-  xsrfCookieName: "XSRF-TOKEN",
-  xsrfHeaderName: "X-XSRF-TOKEN",
-  headers: {
-    Accept: "application/json",
-  },
-});
-
 const login = async (e) => {
-  loginError.value = "";
+  const email = e.values.email;
+  const password = e.values.password;
+  console.log({
+    email: email,
+    password: password,
+    remember_me: remember_me.value,
+  });
+  const message = await loginApi(email, password, remember_me.value);
+  await navigateTo("/dashboard");
 
-  try {
-    await api.get(`${config.public.baseUrl}/sanctum/csrf-cookie`);
-
-    const response = await api.post(`${config.public.apiBaseUrl}/user/login`, {
-      email: e.values.email,
-      password: e.values.password,
-    });
-
-    const user = useCookie("user", { maxAge: 60 * 60 * 24 * 7 });
-    user.value = response.data.user;
-
-    await navigateTo("/dashboard");
-  } catch (error) {
-    loginError.value = error.response.data.message || "Something went wrong!!!";
-  }
+  loginError.value = message;
 };
 </script>

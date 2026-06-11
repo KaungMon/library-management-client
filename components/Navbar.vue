@@ -1,5 +1,5 @@
 <template>
- <!--  <ScrollPanel class="h-full invisible" :class="[{ collapsed: isCollapsed }]">
+   <!--  <ScrollPanel class="h-full invisible" :class="[{ collapsed: isCollapsed }]">
     <div class="navbar py-5 px-7 h-full rounded-lg bg-(--p-content-background)">
       // SECTION - flex column between two ul
       <div class="h-full flex flex-col justify-between">
@@ -111,7 +111,6 @@
       <!-- !SECTION -->
     </div>
   </ScrollPanel>
-  
 </template>
 
 <script setup>

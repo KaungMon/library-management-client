@@ -1,5 +1,5 @@
-export default defineNuxtRouteMiddleware((to) => {
-  const user = useCookie('user')
+export default defineNuxtRouteMiddleware(async (to) => {
+  const { userId } = useAuth();
 
   const authPages = [
     "/auth/login",
@@ -8,11 +8,8 @@ export default defineNuxtRouteMiddleware((to) => {
     "/auth/register/registration",
   ];
 
-  if (authPages.includes(to.path) && user.value) {
+  if (authPages.includes(to.path) && userId.value)
     return navigateTo("/dashboard");
-  }
-
-  if (!authPages.includes(to.path) && !user.value) {
+  if (!authPages.includes(to.path) && !userId.value)
     return navigateTo("/auth/login");
-  }
 });
