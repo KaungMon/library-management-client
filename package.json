@@ -24,6 +24,7 @@
     "tailwindcss-primeui": "^0.3.4",
     "valibot": "^1.2.0",
     "vue": "latest",
+    "vue-advanced-cropper": "^2.8.9",
     "vue-router": "latest"
   },
   "devDependencies": {
