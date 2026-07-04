@@ -7,12 +7,20 @@ export const useAuth = () => {
   const user = useState("user", () => null);
   const authLoaded = useState("authLoaded", () => false);
 
+  const api = axios.create({
+      withCredentials: true,
+      withXSRFToken: true,
+      headers: {
+        Accept: "application/json",
+      },
+    });
+
   const loginApi = async (
     email: string,
     password: string,
     remember_me: boolean,
   ) => {
-    const api = axios.create({
+    const a = axios.create({
       withCredentials: true,
       withXSRFToken: true,
       xsrfCookieName: "XSRF-TOKEN",
@@ -22,9 +30,9 @@ export const useAuth = () => {
       },
     });
     try {
-      await api.get(`${urlBase}/sanctum/csrf-cookie`);
+      await a.get(`${urlBase}/sanctum/csrf-cookie`);
 
-      const resp = await api.post(`${apiBase}/user/login`, {
+      const resp = await a.post(`${apiBase}/user/login`, {
         email,
         password,
         remember_me,
@@ -38,13 +46,6 @@ export const useAuth = () => {
   };
 
   const logoutApi = async () => {
-    const api = axios.create({
-      withCredentials: true,
-      withXSRFToken: true,
-      headers: {
-        Accept: "application/json",
-      },
-    });
 
     try {
       const resp = await api.post(`${apiBase}/auth/user/logout`, {
@@ -58,13 +59,7 @@ export const useAuth = () => {
   };
 
   const fetchUser = async () => {
-    const api = axios.create({
-      withCredentials: true,
-      withXSRFToken: true,
-      headers: {
-        Accept: "application/json",
-      },
-    });
+    
     try {
       const resp = await api.get(`${apiBase}/auth/user/profile`);
       user.value = resp.data.user;
@@ -85,13 +80,6 @@ export const useAuth = () => {
     address: string,
     phone: string,
   ) => {
-    const api = axios.create({
-      withCredentials: true,
-      withXSRFToken: true,
-      headers: {
-        Accept: "application/json",
-      },
-    });
 
     try {
       const resp = await api.post(`${apiBase}/auth/user/edit`, {
@@ -111,6 +99,26 @@ export const useAuth = () => {
     }
   };
 
+  const changePasswordAPI = async (
+    currentPassword : String,
+    newPassword : String,
+  ) => {
+    try {
+      const resp = await api.post(`${apiBase}/auth/user/change_password`, {
+        currentPassword,
+        newPassword
+      });
+      console.log(
+        resp.data.message
+      );
+      
+      return resp.data.message;
+    } catch {
+      return null;
+    }
+  }
+
+
   return {
     userId,
     loginApi,
@@ -119,5 +127,6 @@ export const useAuth = () => {
     user,
     authLoaded,
     editUserApi,
+    changePasswordAPI
   };
 };
