@@ -14,7 +14,7 @@ export const useAuth = () => {
         Accept: "application/json",
       },
     });
-
+  // SECTION - login
   const loginApi = async (
     email: string,
     password: string,
@@ -44,7 +44,9 @@ export const useAuth = () => {
       return axiosError.response?.data?.message || "Something went wrong!!!";
     }
   };
+  // !SECTION
 
+  // SECTION - logout
   const logoutApi = async () => {
 
     try {
@@ -57,11 +59,13 @@ export const useAuth = () => {
       return null;
     }
   };
+  // !SECTION
 
+  // SECTION - get user
   const fetchUser = async () => {
     
     try {
-      const resp = await api.get(`${apiBase}/auth/user/profile`);
+      const resp = await api.get(`${apiBase}/auth/user/profile/`);
       user.value = resp.data.user;
     } catch {
       user.value = null;
@@ -70,7 +74,9 @@ export const useAuth = () => {
       authLoaded.value = true;
     }
   };
+  // !SECTION
 
+  // SECTION - edit user data
   const editUserApi = async (
     email: string,
     first_name: string,
@@ -82,7 +88,7 @@ export const useAuth = () => {
   ) => {
 
     try {
-      const resp = await api.post(`${apiBase}/auth/user/edit`, {
+      const resp = await api.put(`${apiBase}/auth/user/profile/`, {
         email,
         first_name,
         surname,
@@ -98,13 +104,15 @@ export const useAuth = () => {
       return null;
     }
   };
+  // !SECTION
 
+  // SECTION - change password
   const changePasswordAPI = async (
     currentPassword : String,
     newPassword : String,
   ) => {
     try {
-      const resp = await api.post(`${apiBase}/auth/user/change_password`, {
+      const resp = await api.post(`${apiBase}/auth/user/profile/change_password`, {
         currentPassword,
         newPassword
       });
@@ -117,7 +125,49 @@ export const useAuth = () => {
       return null;
     }
   }
+  // !SECTION
 
+  // SECTION - delete account
+  const deleteAccountApi = async (username : String) => {
+    try {
+      const resp = await api.delete(`${apiBase}/auth/user/profile/delete-account`, {
+        data : {
+          username
+        }
+      });
+
+      const message = resp.data.message;
+      
+      return message;
+    } catch {
+      return null;
+    }
+  }
+  // !SECTION
+
+  // SECTION - update image
+  const updateImageAPI = async (image : FormData) => {
+    try {
+      const resp = await api.post(`${apiBase}/auth/user/profile/update-image`, image);
+
+      return resp.data.message;
+    } catch {
+      return null;
+    }
+  }
+  // !SECTION
+
+  // SECTION - delete image
+  const deleteImageApi = async () => {
+    try {
+      const resp = await api.delete(`${apiBase}/auth/user/profile/delete-image`);
+
+      return resp.data.message;
+    } catch {
+      return null;
+    }
+  }
+  // !SECTION
 
   return {
     userId,
@@ -127,6 +177,9 @@ export const useAuth = () => {
     user,
     authLoaded,
     editUserApi,
-    changePasswordAPI
+    changePasswordAPI,
+    deleteAccountApi,
+    updateImageAPI,
+    deleteImageApi,
   };
 };

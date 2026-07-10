@@ -35,16 +35,7 @@
 const isCollapsed = ref(false);
 const isDark = ref(false);
 const emit = defineEmits(["isDark"]);
-const isHovered = ref(false);
 const { user } = useAuth();
-
-const hover = () => {
-  isHovered.value = true;
-};
-
-const hovered = () => {
-  isHovered.value = false;
-};
 
 const toggleDarkMode = function () {
   document.documentElement.classList.toggle("p-dark");
@@ -56,6 +47,7 @@ const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value;
   console.log(isCollapsed.value);
 };
+
 </script>
 
 <style lang="scss" scoped></style>

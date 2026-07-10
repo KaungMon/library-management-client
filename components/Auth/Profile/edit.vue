@@ -199,7 +199,35 @@
                 </p>
               </div>
               <div class="flex justify-start mt-4">
-                <Button label="DELETE ACCOUNT" severity="danger" />
+                <Button label="DELETE ACCOUNT" severity="danger" :disabled="disableDeleteAccount"
+                  @click="visible = true" />
+                <Dialog v-model:visible="visible" modal header="Delete Account" :style="{ width: '24rem' }">
+                  <Form :initialValues="initialOfDeleteAccount" :resolver="deleteResolver" @submit="deleteAccount">
+                    <FormField v-slot="$form" name="username">
+                      <div class="flex flex-col gap-4">
+                        <div class="flex flex-col gap-1.5">
+                          <Message v-if="deleteError" severity="error" size="small">
+                            {{errorMessage}}
+                          </Message>
+                          <Label for="name">To confirm, type <span class="text-red-600">"{{ user?.username }}"</span> in
+                            the box below.</Label>
+                          <InputText id="username" name="username" />
+                          <Message v-if="$form?.invalid" severity="error" size="small">
+                            {{ $form.error.message }}
+                          </Message>
+                        </div>
+                      </div>
+                    </FormField>
+                    <div class="flex justify-end gap-3 mt-5">
+                      <Button severity="secondary" variant="outlined" @click="visible = false">Cancel</Button>
+                      <Button type="submit" severity="danger" label="Delete" />
+                    </div>
+                  </Form>
+
+                  <template #footer>
+
+                  </template>
+                </Dialog>
               </div>
             </div>
           </SplitterPanel>
@@ -217,8 +245,12 @@ import { valibotResolver } from "@primevue/forms/resolvers/valibot";
 import { useToast } from "primevue/usetoast";
 import * as v from "valibot";
 
-const { userId, user, editUserApi, changePasswordAPI } = useAuth();
+const { userId, user, editUserApi, changePasswordAPI, deleteAccountApi } = useAuth();
 const toast = useToast();
+const disableDeleteAccount = computed(() => user.value?.id === 1);
+const visible = ref(false);
+const deleteError = ref(false);
+const errorMessage = ref("");
 
 const initialValues = ref({
   firstName: `${user?.value?.first_name}`,
@@ -232,6 +264,10 @@ const initialValues = ref({
   newPassword: "",
   confirmPassword: "",
 });
+
+const initialOfDeleteAccount = ref({
+  username: "",
+})
 
 const genders = ref([
   { name: "Male", code: "M" },
@@ -309,12 +345,26 @@ const passwordResolver = valibotResolver(
     ),
   )
 )
+
+const deleteResolver = valibotResolver(
+  v.object({
+    username: v.pipe(
+      v.string(),
+      v.trim(),
+      v.minLength(1, "You need to fill username."),
+      v.toLowerCase(),
+    )
+  }),
+)
 // !SECTION
 
+// SECTION - return back
 const back = () => {
   navigateTo("/auth/profile");
 };
+// !SECTION
 
+// SECTION - on Form Submit
 const onFormSubmit = (e) => {
   const message = editUserApi(
     e.values.email,
@@ -331,20 +381,22 @@ const onFormSubmit = (e) => {
       severity: "success",
       summary: "Info",
       detail: "Updated Successful!!!",
-      life : 3000,
+      life: 3000,
     });
   }
 };
+// !SECTION
 
+// SECTION - change password
 const changePassword = async (e) => {
   const message = await changePasswordAPI(e.values.currentPassword, e.values.newPassword);
-  
+
   if (message === "Password Changed!!!") {
     toast.add({
       severity: "success",
       summary: "Info",
       detail: "Password Changed Successfully!!!",
-      life : 3000,
+      life: 3000,
     });
 
     userId.value = null;
@@ -354,15 +406,34 @@ const changePassword = async (e) => {
       severity: "error",
       summary: "Something went wrong",
       detail: "Password Change Unable",
-      life : 3000,
+      life: 3000,
     });
   }
 }
+// !SECTION
 
+// SECTION - delete account
+const deleteAccount = async (e) => {
+  const message = await deleteAccountApi(e.values.username);
 
-onMounted(() => {
-  console.log(user.value)
-})
+  if (message === null) {
+    deleteError.value = true;
+    errorMessage.value = "Something went wrong.";
+    return;
+  }
+
+  if (message === "The username is incorrect.") {
+    deleteError.value = true;
+    errorMessage.value = message;
+    return;
+  }
+
+  user.value = null;
+  userId.value = null;
+
+  await navigateTo("/auth/login");
+};
+// !SECTION
 </script>
 
 <style lang="scss" scoped></style>
