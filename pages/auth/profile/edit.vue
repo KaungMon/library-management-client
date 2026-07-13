@@ -1,0 +1,16 @@
+<template>
+  <div>
+    <AuthProfileEdit/>
+  </div>
+</template>
+
+<script setup>
+definePageMeta({
+  layout : "custom"
+})
+
+</script>
+
+<style lang="scss" scoped>
+
+</style>

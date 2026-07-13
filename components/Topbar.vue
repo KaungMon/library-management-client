@@ -19,13 +19,11 @@
         <ToggleSwitch @click="toggleDarkMode()" />
         <!-- !SECTION -->
         <!-- SECTION - user indicator -->
-        <div class="flex flex-row items-center gap-3 bg-(--p-primary-color) px-3 py-2 rounded-full">
-          <h2>Kaung Mon</h2>
-          <img
-            class="size-[2.5em] object-cover object-center rounded-full"
-            src="/public/img/simon-lee-dark-bule.jpg"
-            alt=""
-          />
+        <div class="profile flex flex-row items-center gap-3 bg-(--p-primary-color) rounded-full">
+          <nuxt-link class="profile_name" to="/auth/profile">
+            <img class="size-[3.0em] object-cover object-center rounded-full"
+              :src="profileImg" alt="" />
+          </nuxt-link>
         </div>
         <!-- !SECTION -->
       </div>
@@ -36,16 +34,21 @@
 <script setup>
 const isCollapsed = ref(false);
 const isDark = ref(false);
-const emit = defineEmits (['isDark']);
+const emit = defineEmits(["isDark"]);
+const { user } = useAuth();
+const profileImg = useState("profileImg");
+
 const toggleDarkMode = function () {
   document.documentElement.classList.toggle("p-dark");
   isDark.value = !isDark.value;
-  emit('isDark' , isDark.value);
+  emit("isDark", isDark.value);
 };
 
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value;
   console.log(isCollapsed.value);
-}
+};
 
 </script>
+
+<style lang="scss" scoped></style>
