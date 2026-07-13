@@ -44,6 +44,10 @@ const toggleDarkMode = function () {
   emit("isDark", isDark.value);
 };
 
+watch(() => user.value?.image, (image) => {
+  profileImg.value = image ?? '/img/default_avatar.avif';
+}, { immediate: true })
+
 const toggleSidebar = () => {
   isCollapsed.value = !isCollapsed.value;
   console.log(isCollapsed.value);
