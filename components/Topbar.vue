@@ -22,7 +22,7 @@
         <div class="profile flex flex-row items-center gap-3 bg-(--p-primary-color) rounded-full">
           <nuxt-link class="profile_name" to="/auth/profile">
             <img class="size-[3.0em] object-cover object-center rounded-full"
-              :src="user?.image ? user?.image : `/img/default_avatar.avif`" alt="" />
+              :src="profileImg" alt="" />
           </nuxt-link>
         </div>
         <!-- !SECTION -->
@@ -36,6 +36,7 @@ const isCollapsed = ref(false);
 const isDark = ref(false);
 const emit = defineEmits(["isDark"]);
 const { user } = useAuth();
+const profileImg = useState("profileImg");
 
 const toggleDarkMode = function () {
   document.documentElement.classList.toggle("p-dark");

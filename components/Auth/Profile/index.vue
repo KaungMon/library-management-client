@@ -10,12 +10,12 @@
             <div v-if="editStatus" class="mr-8 relative">
               <Cropper ref="cropper" class="size-[15rem]"
                 :stencil-props="{ handlers: {}, movable: false, resizable: false, aspectRatio: 1 / 1, }"
-                :resize-image="{ adjustStencil: false }" :src="img" :stencil-component="CircleStencil"
+                :resize-image="{ adjustStencil: false }" :src="cropperImg" :stencil-component="CircleStencil"
                 :default-size="defaultSize" image-restriction="stencil" />
               <SpeedDial :model="editImage" direction="up" :style="{ position: 'absolute', right: 0, bottom: 0 }" />
             </div>
             <div v-else class="mr-8 relative">
-              <img :src="img" alt="" class="size-[15rem] object-cover object-center rounded-full" />
+              <img :src="profileImg" alt="" class="size-[15rem] object-cover object-center rounded-full" />
               <input type="file" ref="fileInput" accept="image/*" @change="onFileChange" hidden>
               <SpeedDial :model="items" direction="up" :style="{ position: 'absolute', right: 0, bottom: 0 }" mask />
             </div>
@@ -104,11 +104,15 @@ import { useToast } from "primevue/usetoast";
 
 const { user, updateImageAPI, deleteImageApi } = useAuth();
 const editStatus = ref(false);
-const img = ref(user.value?.image ?? '/img/default_avatar.avif');
-const tempImg = ref(null);
+const profileImg = useState("profileImg", () => '/img/default_avatar.avif');
+const cropperImg = ref(null);
 const fileInput = ref(null);
 const cropper = ref(null);
 const toast = useToast();
+
+watch(() => user.value?.image, (image) => {
+  profileImg.value = image ?? '/img/default_avatar.avif';
+}, { immediate: true })
 
 const defaultSize = ({ imageSize, visibleArea }) => ({
   width: (visibleArea || imageSize).width,
@@ -125,7 +129,7 @@ const items = ref([
     command: async () => {
       const message = await deleteImageApi();
       if (message == "Delete Image Successfully!!!") {
-        img.value = "/img/default_avatar.avif";
+        profileImg.value = "/img/default_avatar.avif";
         toast.add({
           severity: "success",
           summary: "Info",
@@ -149,7 +153,7 @@ const editImage = ref([
     icon: "pi pi-times",
     severity: "danger",
     command: () => {
-      img.value = tempImg.value;
+      profileImg.value = cropperImg.value;
       editStatus.value = false;
     }
   },
@@ -165,8 +169,7 @@ const onFileChange = (event) => {
   const input = event.target.files[0];
 
   if (!input) return;
-  tempImg.value = img.value;
-  img.value = URL.createObjectURL(input);
+  cropperImg.value = URL.createObjectURL(input);
 
   editStatus.value = true;
 };
@@ -180,7 +183,7 @@ const editingImg = () => {
     const message = await updateImageAPI(formData);
     editStatus.value = false;
     if (message === "Update Image Successfully!!!") {
-      img.value = canvas.toDataURL();
+      profileImg.value = canvas.toDataURL();
       toast.add({
         severity: "success",
         summary: "Info",

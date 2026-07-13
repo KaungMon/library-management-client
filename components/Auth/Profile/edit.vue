@@ -245,7 +245,7 @@ import { valibotResolver } from "@primevue/forms/resolvers/valibot";
 import { useToast } from "primevue/usetoast";
 import * as v from "valibot";
 
-const { userId, user, editUserApi, changePasswordAPI, deleteAccountApi } = useAuth();
+const { userId, user, editUserApi, changePasswordAPI, deleteAccountApi, fetchUser } = useAuth();
 const toast = useToast();
 const disableDeleteAccount = computed(() => user.value?.id === 1);
 const visible = ref(false);
@@ -365,7 +365,7 @@ const back = () => {
 // !SECTION
 
 // SECTION - on Form Submit
-const onFormSubmit = (e) => {
+const onFormSubmit = async (e) => {
   const message = editUserApi(
     e.values.email,
     e.values.firstName,
@@ -383,6 +383,7 @@ const onFormSubmit = (e) => {
       detail: "Updated Successful!!!",
       life: 3000,
     });
+    await fetchUser();
   }
 };
 // !SECTION
